@@ -10,6 +10,9 @@ pygame.display.set_caption("2048 - Start Screen")
 # --- สีและฟอนต์ ---
 BG_COLOR = (187, 173, 160)
 WHITE = (255, 255, 255)
+BUTTON_COLOR = (205, 193, 180) 
+BUTTON_HOVER = (222, 208, 190)  
+TEXT_COLOR = (119, 110, 101)
 FONT = pygame.font.Font(None, 72)
 
 # --- ฟังก์ชันสำหรับวาดหน้าจอเริ่มต้น ---
