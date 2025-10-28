@@ -41,7 +41,7 @@ def draw_menu():
 
 def main():
     clock = pygame.time.Clock()
-    state = "MENU"  # เริ่มที่หน้าเมนูเลย
+    state = "MENU" 
 
     running = True
     while running:
