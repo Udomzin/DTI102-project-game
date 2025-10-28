@@ -2,9 +2,13 @@ import pygame, sys, random
 pygame.init()
 
 # --- หน้าจอ ---
-WIDTH, HEIGHT = 1500, 800
+WIDTH, HEIGHT = 1440, 1024
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("2048")
+
+# --- โหลดภาพพื้นหลัง ---
+background = pygame.image.load("background.png")
+background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # ปรับให้พอดีหน้าจอ
 
 # --- สี ---
 PURPLE = (90, 0, 140)
@@ -17,7 +21,7 @@ TILE_COLOR = (205, 193, 180)
 TEXT_COLOR = (50, 50, 50)
 
 # --- ฟอนต์ ---
-font_title = pygame.font.Font(None, 120)
+font_title = pygame.font.Font(None, 180)
 font_btn = pygame.font.Font(None, 50)
 font_num = pygame.font.Font(None, 60)
 clock = pygame.time.Clock()
@@ -49,8 +53,8 @@ def reset_game():
     add_random_tile()
 
 def draw_menu():
-    screen.fill(PURPLE)
-    title = font_title.render("2048", True, WHITE)
+    screen.blit(background, (0, 0))
+    title = font_title.render("2048", True, (252, 220, 133))
     screen.blit(title, title.get_rect(center=(WIDTH // 2, HEIGHT // 3)))
 
     for rect, text, color in [
@@ -64,7 +68,7 @@ def draw_menu():
     pygame.display.flip()
 
 def draw_game():
-    screen.fill(BG_COLOR)
+    screen.blit(background, (0, 0)) #แสดงพื้นหลัง
     size, gap = 120, 15
     start_x = (WIDTH - (size * 4 + gap * 3)) // 2
     start_y = (HEIGHT - (size * 4 + gap * 3)) // 2 - 50
