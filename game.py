@@ -7,16 +7,18 @@ WIDTH, HEIGHT = 700, 800
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("2048")
 
-BG_COLOR = (187, 173, 160)
+BG_COLOR = (187, 173, 160)  ค่าสี
 PURPLE   = (90, 0, 140)
 WHITE    = (255, 255, 255)
 PLAYER1  = (120, 80, 200)
 PLAYER2  = (200, 80, 80)
 ORANGE   = (240, 100, 40)
 
-FONT_TITLE = pygame.font.Font(None, 100)
+FONT_TITLE = pygame.font.Font(None, 100)  ฟอนต์ 
 FONT_MAIN  = pygame.font.Font(None, 72)
 FONT_BTN   = pygame.font.Font(None, 40)
+
+ปุ่ม 3 ปุ่มหน้าเกมส์ 
 
 player1_rect = pygame.Rect(0, 0, 220, 60); player1_rect.center = (WIDTH // 2, 350)
 player2_rect = pygame.Rect(0, 0, 220, 60); player2_rect.center = (WIDTH // 2, 420)
