@@ -49,13 +49,13 @@ how_rect.center = (center_x, start_y + space * 2)
 # --- ตารางเกม ---
 grid = [[0] * 4 for _ in range(4)]
 
-def add_random_tile():
+def add_random_tile(): #สุ่มตัวเลขเริ่มต้น
     empty = [(r, c) for r in range(4) for c in range(4) if grid[r][c] == 0]
     if empty:
         r, c = random.choice(empty)
         grid[r][c] = 2
 
-def reset_game():
+def reset_game():  #รีเซทตาราง
     global grid
     grid = [[0] * 4 for _ in range(4)]
     add_random_tile()
@@ -76,8 +76,8 @@ def draw_menu():
                     font_btn.render(text, True, WHITE).get_rect(center=rect.center))
     pygame.display.flip()
 
-def draw_game():
-    screen.blit(background, (0, 0)) #แสดงพื้นหลัง
+def draw_game(): #วาดตารางเกมจัดให้อยู้ตรงกลางหน้าจอ
+    screen.blit(background, (0, 0))
     size, gap = 120, 15
     start_x = (WIDTH - (size * 4 + gap * 3)) // 2
     start_y = (HEIGHT - (size * 4 + gap * 3)) // 2 - 50
