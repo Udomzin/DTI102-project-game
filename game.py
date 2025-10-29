@@ -16,23 +16,32 @@ WHITE = (255, 255, 255)
 PLAYER1 = (120, 80, 200)
 PLAYER2 = (200, 80, 80)
 ORANGE = (240, 100, 40)
+#สีพื้นหลังบอร์ดเกม 2048 สีเดียวกับเกมออริจิ 
 BG_COLOR = (187, 173, 160)
+#สีช่องสี่เหลี่ยมของตาราง
 TILE_COLOR = (205, 193, 180)
+#สีตัวเลขบนช่อง 
 TEXT_COLOR = (50, 50, 50)
 
-# --- ฟอนต์ ---
+# ฟอนต์หัวข้อใหญ่
 font_title = pygame.font.Font(None, 180)
+# ฟ้อนปุ่มเมนู
 font_btn = pygame.font.Font(None, 50)
+# ฟ้อนตัวเลขบนช่อง
 font_num = pygame.font.Font(None, 60)
+# นาฬิกาคุมเฟรมเรต 
 clock = pygame.time.Clock()
 
-# --- ปุ่มเมนู ---
+# ปุ่มเมนูสี่เหลี่ยม player one , player two , how to play
 player1_rect = pygame.Rect(0, 0, 260, 70)
 player2_rect = pygame.Rect(0, 0, 260, 70)
 how_rect = pygame.Rect(0, 0, 260, 70)
+# คำนวนตำแหน่งกึ่งกลางจอ 
 center_x = WIDTH // 2
 start_y = HEIGHT // 2 - 50
+# ระยะฟ่างระหวางปุ่ม
 space = 90
+# จัดให้ทุกปุ่มอยุ่กลางจอ 
 player1_rect.center = (center_x, start_y)
 player2_rect.center = (center_x, start_y + space)
 how_rect.center = (center_x, start_y + space * 2)
