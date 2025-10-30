@@ -2,7 +2,7 @@ import pygame, sys, random
 pygame.init()
 
 # --- หน้าจอ ---
-WIDTH, HEIGHT = 1440, 1024
+WIDTH, HEIGHT = 1440, 824
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("2048")
 
@@ -63,8 +63,8 @@ def reset_game():  #รีเซทตาราง
 
 def draw_menu():
     screen.blit(background, (0, 0))
-    title = font_title.render("2048", True, (252, 220, 133))
-    screen.blit(title, title.get_rect(center=(WIDTH // 2, HEIGHT // 3)))
+    title = font_title.render("2048", True, (250, 220, 133))
+    screen.blit(title, title.get_rect(center=(WIDTH // 2, HEIGHT // 3.5)))
 
     for rect, text, color in [
         (player1_rect, "Player One", PLAYER1),
