@@ -264,7 +264,7 @@ def show_game_over(score):
                 elif menu_rect.collidepoint(e.pos):
                     return "menu"
 
-def main(): ฟลุค ธี
+def main(): #ฟลุค ธี
     global grid
     game_state = "menu"
 
