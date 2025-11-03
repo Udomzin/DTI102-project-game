@@ -7,20 +7,23 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("2048")
 
 # --- โหลดภาพพื้นหลัง ---
-background = pygame.image.load("background.png")
-background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # ปรับให้พอดีหน้าจอ
+#background = pygame.image.load("background.png")
+#background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # ปรับให้พอดีหน้าจอ
+
+import os
+current_dir = os.path.dirname(__file__)
+background_path = os.path.join(current_dir, "background.png")
+background = pygame.image.load(background_path)
+background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
 # --- สี ---
 PURPLE = (90, 0, 140)
 WHITE = (255, 255, 255)
 PLAYER1 = (120, 80, 200)
 PLAYER2 = (200, 80, 80)
-ORANGE = (240, 100, 40)
-#สีพื้นหลังบอร์ดเกม 2048 สีเดียวกับเกมออริจิ 
-BG_COLOR = (187, 173, 160)
-#สีช่องสี่เหลี่ยมของตาราง
-TILE_COLOR = (205, 193, 180)
-#สีตัวเลขบนช่อง 
+ORANGE = (240, 100, 40) 
+BG_COLOR = (66, 1, 105)
+TILE_COLOR = (205, 193, 180) 
 TEXT_COLOR = (50, 50, 50)
 
 # ฟอนต์หัวข้อใหญ่
@@ -121,27 +124,22 @@ def shift_right(grid):
 
 def shift_up(grid):
     # สร้างตารางใหม่ขนาด 4x4 ที่เต็มไปด้วยศูนย์ เพื่อเก็บค่าหลังจากเลื่อนขึ้น
-    new_grid = [[0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0]]
+    new_grid = [[0]*4 for _ in range(4)]
 
     # วนลูปทีละคอลัมน์ (แนวตั้ง) ทั้งหมด 4 คอลัมน์
     for c in range(4):
         col = []  # สร้างลิสต์ว่างสำหรับเก็บตัวเลขในคอลัมน์นั้น
 
-        # วนจากแถวบนสุด (r=0) ไปถึงแถวล่างสุด (r=3)
         for r in range(4):
-            if grid[r][c] != 0:  # ถ้าในช่องนั้นมีตัวเลข (ไม่ใช่ศูนย์)
-                col.append(grid[r][c])  # เพิ่มค่าตัวเลขนั้นลงในลิสต์ col
+            if grid[r][c] != 0:
+                col.append(grid[r][c])
 
-        # เริ่มรวมเลขที่เหมือนกัน (ตรรกะเดียวกับ shift_left)
         i = 0
-        while i < len(col) - 1:  # วนดูแต่ละคู่ของตัวเลขติดกัน
-            if col[i] == col[i + 1]:  # ถ้าค่าของสองตัวติดกันเท่ากัน
-                col[i] *= 2            # รวมกันเป็นตัวเดียว (คูณ 2)
-                col[i + 1] = 0         # ช่องถัดไปกลายเป็นศูนย์ (เพราะถูกรวมแล้ว)
-            i += 1                     # ขยับไปดูคู่ถัดไป
+        while i < len(col) - 1: 
+            if col[i] == col[i + 1]: 
+                col[i] *= 2         
+                col[i + 1] = 0     
+            i += 1                     
 
         # ลบศูนย์ที่เกิดจากการรวมออก เพื่อให้ตัวเลขขยับขึ้นไปติดกัน
         col = [x for x in col if x != 0]
@@ -160,42 +158,86 @@ def shift_up(grid):
 
 def shift_down(grid):
     # สร้างตารางใหม่ขนาด 4x4 ที่เต็มไปด้วยศูนย์ เพื่อเก็บค่าหลังจากเลื่อนลง
-    new_grid = [[0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0]]
+    new_grid = [[0]*4 for _ in range(4)]
 
-    # วนลูปทีละคอลัมน์ (แนวตั้ง) ทั้งหมด 4 คอลัมน์
     for c in range(4):
-        col = []  # สร้างลิสต์ว่างสำหรับเก็บค่าตัวเลขในคอลัมน์นั้น
+        col = []  # 
 
-        # วนจากแถวล่างสุด (r=3) ขึ้นไปบนสุด (r=0)
         for r in range(3, -1, -1):
-            if grid[r][c] != 0:  # ถ้าในช่องนั้นมีตัวเลข (ไม่ใช่ศูนย์)
-                col.append(grid[r][c])  # เพิ่มค่าตัวเลขนั้นลงในลิสต์ col
+            if grid[r][c] != 0: 
+                col.append(grid[r][c])
 
-        # รวมเลขที่เหมือนกัน (ตรรกะเดียวกับ shift_right)
         i = 0
         while i < len(col) - 1:
-            if col[i] == col[i + 1]:  # ถ้าสองค่าติดกันเท่ากัน
-                col[i] *= 2            # รวมกันเป็นค่าเดียว (คูณ 2)
-                col[i + 1] = 0         # ช่องถัดไปกลายเป็นศูนย์
+            if col[i] == col[i + 1]:
+                col[i] *= 2 
+                col[i + 1] = 0 
             i += 1
-
-        # ลบศูนย์ที่เกิดจากการรวมออก
         col = [x for x in col if x != 0]
 
         # เติม 0 ด้านบนให้ครบ 4 ตัว (เพราะเลื่อนลง ด้านบนจะว่าง)
         while len(col) < 4:
             col.append(0)
 
-        # ใส่ค่ากลับลงในคอลัมน์เดิมของตารางใหม่
-        # แต่ต้องใส่ "จากล่างขึ้นบน" เพราะเรารวมจากล่าง
         for r in range(4):
             new_grid[3 - r][c] = col[r]
 
     # ส่งคืนตารางใหม่ที่เลื่อนและรวมเสร็จแล้ว
     return new_grid
+
+def is_game_over(): #เช็กว่าเกมจบหรือยัง
+    for r in range(4):
+        for c in range(4):
+            if grid[r][c] == 0:
+                return False
+    for r in range(4):
+        for c in range(4):
+            if c < 3 and grid[r][c] == grid[r][c + 1]:
+                return False
+            if r < 3 and grid[r][c] == grid[r + 1][c]:
+                return False
+    return True
+
+def get_score(): #ดูคะแนนตอนเกมจบ
+    return sum(sum(r) for r in grid)
+
+def show_game_over(score):
+    screen.fill(BG_COLOR)
+    text1 = font_title.render("Game Over", True, WHITE)
+    text2 = font_num.render(f"Score: {score}", True, WHITE)
+    screen.blit(text1, text1.get_rect(center=(WIDTH//2, HEIGHT//2 - 140)))
+    screen.blit(text2, text2.get_rect(center=(WIDTH//2, HEIGHT//2 + 20)))
+    pygame.display.flip()
+    
+     # สร้างปุ่ม
+    btn_width, btn_height = 260, 70
+    play_again_rect = pygame.Rect(0, 0, btn_width, btn_height)
+    menu_rect = pygame.Rect(0, 0, btn_width, btn_height)
+    play_again_rect.center = (WIDTH//2, HEIGHT//2 + 150)
+    menu_rect.center = (WIDTH//2, HEIGHT//2 + 240)
+
+    # วาดปุ่ม
+    pygame.draw.rect(screen, PLAYER1, play_again_rect, border_radius=10)
+    pygame.draw.rect(screen, ORANGE, menu_rect, border_radius=10)
+
+    screen.blit(font_btn.render("Play Again", True, WHITE),
+                font_btn.render("Play Again", True, WHITE).get_rect(center=play_again_rect.center))
+    screen.blit(font_btn.render("Back to Menu", True, WHITE),
+                font_btn.render("Back to Menu", True, WHITE).get_rect(center=menu_rect.center))
+
+    pygame.display.flip()
+
+    # รอคลิก
+    while True:
+        for e in pygame.event.get():
+            if e.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if e.type == pygame.MOUSEBUTTONDOWN:
+                if play_again_rect.collidepoint(e.pos):
+                    return "play_again"
+                elif menu_rect.collidepoint(e.pos):
+                    return "menu"
 
 def main():
     global grid
@@ -222,17 +264,21 @@ def main():
 
                     before = [r[:] for r in grid]
 
-                    if e.key in (pygame.K_LEFT, pygame.K_a): #เมื่อกดลูกศรซ้าย,ปุ่ม a
-                        grid = shift_left(grid) #ตารางรวมทางซ้าย
-                    elif e.key in (pygame.K_RIGHT, pygame.K_d): #เมื่อกดลูกศรขวา,ปุ่ม d
-                        grid = shift_right(grid) #ตารางรวมทางขวา
-                    elif e.key in (pygame.K_UP, pygame.K_w): #เมื่อกดลูกศรขึ้น,ปุ่ม w
-                        grid = shift_up(grid) #ตารางรวมกดขึ้น
-                    elif e.key in (pygame.K_DOWN, pygame.K_s): #เมื่อกดลูกศรลง,ปุ่ม s
-                        grid = shift_down(grid) #ตารางรวมกดลง
-
+                    if e.key in (pygame.K_LEFT, pygame.K_a):
+                        grid = shift_left(grid) 
+                    elif e.key in (pygame.K_RIGHT, pygame.K_d): 
+                        grid = shift_right(grid) 
+                    elif e.key in (pygame.K_UP, pygame.K_w):
+                        grid = shift_up(grid)
+                    elif e.key in (pygame.K_DOWN, pygame.K_s):
+                        grid = shift_down(grid) 
+                        
                     if grid != before:
                         add_random_tile()
+                    if is_game_over():
+                        score = get_score()
+                        show_game_over(score)
+                        game_state = "menu"
 
         if game_state == "menu": draw_menu()
         elif game_state == "play": draw_game()
