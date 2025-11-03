@@ -1,12 +1,12 @@
 import pygame, sys, random
 pygame.init()
 
-# --- หน้าจอ ---
+# --- หน้าจอ --- ฟลุค
 WIDTH, HEIGHT = 1440, 824
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("2048")
 
-# --- โหลดภาพพื้นหลัง ---
+# --- โหลดภาพพื้นหลัง --- 
 #background = pygame.image.load("background.png")
 #background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # ปรับให้พอดีหน้าจอ
 
@@ -48,22 +48,22 @@ player1_rect.center = (center_x, start_y)
 player2_rect.center = (center_x, start_y + space)
 how_rect.center = (center_x, start_y + space * 2)
 
-# --- ตารางเกม ---
+# --- ตารางเกม --- ฟลุค
 grid = [[0] * 4 for _ in range(4)]
 
-def add_random_tile(): #สุ่มตัวเลขเริ่มต้น
+def add_random_tile(): #สุ่มตัวเลขเริ่มต้น ฟลุค
     empty = [(r, c) for r in range(4) for c in range(4) if grid[r][c] == 0]
     if empty:
         r, c = random.choice(empty)
         grid[r][c] = 2
 
-def reset_game():  #รีเซทตาราง
+def reset_game():  #รีเซทตาราง ฟลุค
     global grid
     grid = [[0] * 4 for _ in range(4)]
     add_random_tile()
     add_random_tile()
 
-def draw_menu():
+def draw_menu(): 
     screen.blit(background, (0, 0))
     title = font_title.render("2048", True, (250, 220, 133))
     screen.blit(title, title.get_rect(center=(WIDTH // 2, HEIGHT // 3.5)))
@@ -78,7 +78,7 @@ def draw_menu():
                     font_btn.render(text, True, WHITE).get_rect(center=rect.center))
     pygame.display.flip()
 
-def draw_game(): #วาดตารางเกมจัดให้อยู้ตรงกลางหน้าจอ
+def draw_game(): #วาดตารางเกมจัดให้อยู้ตรงกลางหน้าจอ ฟลุค
     screen.blit(background, (0, 0))
     size, gap = 120, 15
     start_x = (WIDTH - (size * 4 + gap * 3)) // 2
@@ -123,7 +123,7 @@ def draw_game(): #วาดตารางเกมจัดให้อยู�
     screen.blit(tip, tip.get_rect(center=(WIDTH // 2, HEIGHT - 100)))
     pygame.display.flip()
 
-def shift_left(g):
+def shift_left(g): 
     #เลื่อนและรวมตัวเลขไปทางซ้าย  
     new_grid = [] #เก็บตารางใหม่
     for r in g: #วนแถวในตาราง
@@ -264,7 +264,7 @@ def show_game_over(score):
                 elif menu_rect.collidepoint(e.pos):
                     return "menu"
 
-def main():
+def main(): ฟลุค ธี
     global grid
     game_state = "menu"
 
