@@ -136,36 +136,39 @@ def draw_buttons(start_x, start_y, size, gap):
     pygame.display.flip()
 
 def shift_left(g): 
-    #เลื่อนและรวมตัวเลขไปทางซ้าย  
-    new_grid = [] #เก็บตารางใหม่
-    for r in g: #วนแถวในตาราง
-        row = [x for x in r if x != 0] #วนเลขในแถว ถ้า !=0 จะเก็บใน new
-        i = 0 #ใช้เป็นตัวนับสำหรับวนเช็กตัวเลข
-        while i < len(row) - 1: #วนจนกว่าจะถึงตัวก่อนสุดท้าย
-            if row[i] == row[i + 1]: #ถ้าค่าตัวติดกันเท่ากัน
-                row[i] *= 2 #รวมตัวเลขสองตัวนั้น(x2) แล้วเก็บค่าใหม่ไว้
-                row[i + 1] = 0 #ลบค่าตัวถัดไปออก (เพราะถูกรวมแล้ว)
-            i += 1 #ขยับ i เพื่อเช็กแถวถัดไป
-        row += [0] * (4 - len(row)) #หลังจากรวมเลข เติม 0 ให้แถวมีครบ 4 ตัว
-        new_grid.append(row) #เพิ่มแถวที่เลื่อนและรวมเสร็จแล้ว เข้าในลิสต์ new
-    return new_grid #ส่งคืนตารางใหม่ที่แต่ละแถวถูกเลื่อนและรวมเรียบร้อยแล้ว
+    
+    new_grid = [] 
+    for r in g:
+        row = [x for x in r if x != 0]
+        i = 0
+        while i < len(row) - 1:
+            if row[i] == row[i + 1]:
+                row[i] *= 2
+                row[i + 1] = 0
+            i += 1
+        row += [0] * (4 - len(row))
+        new_grid.append(row)
+    return new_grid
 
 def shift_right(grid):
-    #เลื่อนและรวมตัวเลขไปทางขวา
+    
     new_grid = []
     for row in grid:
-        reversed_row = row[::-1] # กลับด้านไปทางซ้ายเพื่อรวมเลข
-        shifted = shift_left([reversed_row])[0] #เลื่อนและรวม เอาที่ได้กลับมาเก็บ [0]คือแถวเดียว
-        new_grid.append(shifted[::-1]) #กลับให้เป็นขวาเหมือนเดิม
+        reversed_row = row[::-1]
+        shifted = shift_left([reversed_row])[0]
+        new_grid.append(shifted[::-1])
     return new_grid
 
 def shift_up(grid):
-    # สร้างตารางใหม่ขนาด 4x4 ที่เต็มไปด้วยศูนย์ เพื่อเก็บค่าหลังจากเลื่อนขึ้น
-    new_grid = [[0]*4 for _ in range(4)]
+    
+    new_grid = [[0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0]]
 
-    # วนลูปทีละคอลัมน์ (แนวตั้ง) ทั้งหมด 4 คอลัมน์
+    
     for c in range(4):
-        col = []  # สร้างลิสต์ว่างสำหรับเก็บตัวเลขในคอลัมน์นั้น
+        col = []
 
         for r in range(4):
             if grid[r][c] != 0:
@@ -178,27 +181,30 @@ def shift_up(grid):
                 col[i + 1] = 0     
             i += 1                     
 
-        # ลบศูนย์ที่เกิดจากการรวมออก เพื่อให้ตัวเลขขยับขึ้นไปติดกัน
+        
         col = [x for x in col if x != 0]
 
-        # เติม 0 ด้านล่างให้ครบ 4 ตัว (เพราะเลื่อนขึ้น ด้านล่างจะว่าง)
+        
         while len(col) < 4:
             col.append(0)
 
-        # ใส่ค่าที่ได้กลับลงในตำแหน่งคอลัมน์เดิมของตารางใหม่
+        
         for r in range(4):
             new_grid[r][c] = col[r]
 
-    # ส่งคืนตารางใหม่ที่เลื่อนและรวมเสร็จแล้ว
+    
     return new_grid
 
 
 def shift_down(grid):
-    # สร้างตารางใหม่ขนาด 4x4 ที่เต็มไปด้วยศูนย์ เพื่อเก็บค่าหลังจากเลื่อนลง
-    new_grid = [[0]*4 for _ in range(4)]
+    
+    new_grid = [[0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0]]
 
     for c in range(4):
-        col = []  # 
+        col = []  
 
         for r in range(3, -1, -1):
             if grid[r][c] != 0: 
@@ -212,14 +218,14 @@ def shift_down(grid):
             i += 1
         col = [x for x in col if x != 0]
 
-        # เติม 0 ด้านบนให้ครบ 4 ตัว (เพราะเลื่อนลง ด้านบนจะว่าง)
+        
         while len(col) < 4:
             col.append(0)
 
         for r in range(4):
             new_grid[3 - r][c] = col[r]
 
-    # ส่งคืนตารางใหม่ที่เลื่อนและรวมเสร็จแล้ว
+    
     return new_grid
 
 def is_game_over(): #เช็กว่าเกมจบหรือยัง
