@@ -28,11 +28,8 @@ TEXT_COLOR = (50, 50, 50)
 
 # ฟอนต์หัวข้อใหญ่ แตง
 font_title = pygame.font.Font(None, 180)
-
 font_btn = pygame.font.Font(None, 50)
-
 font_num = pygame.font.Font(None, 60)
-
 clock = pygame.time.Clock()
 
 # ปุ่มเมนูสี่เหลี่ยม player one , player two , how to play แตง
@@ -92,15 +89,13 @@ def draw_game(): #วาดตารางเกมจัดให้อยู�
             if grid[r][c]:
                 text = font_num.render(str(grid[r][c]), True, TEXT_COLOR)
                 screen.blit(text, text.get_rect(center=rect.center))
-                
-    #undo,swap,delete แตง        
- 
+    pygame.display.flip()
+    
+#undo,swap,delete แตง        
 Button_W, Button_H, Button_SPACE = 120, 60, 18
-
 Button_undo_rect   = pygame.Rect(0, 0, Button_W, Button_H)
 Button_swap_rect   = pygame.Rect(0, 0, Button_W, Button_H)
 Button_delete_rect = pygame.Rect(0, 0, Button_W, Button_H)
-
 
 def draw_buttons(start_x, start_y, size, gap):
     board_w = size * 4 + gap * 3
@@ -109,17 +104,14 @@ def draw_buttons(start_x, start_y, size, gap):
     bar_y = start_y + board_h + 25
     bar_w = Button_W * 3 + Button_SPACE * 2
     bar_x = (WIDTH - bar_w) // 2
-
  
     Button_undo_rect.topleft   = (bar_x + 0 * (Button_W + Button_SPACE), bar_y)
     Button_swap_rect.topleft   = (bar_x + 1 * (Button_W + Button_SPACE), bar_y)
     Button_delete_rect.topleft = (bar_x + 2 * (Button_W + Button_SPACE), bar_y)
-
     
     bar_bg_rect = pygame.Rect(bar_x - 16, bar_y - 16, bar_w + 32, Button_H + 32)
     pygame.draw.rect(screen, (225, 218, 200), bar_bg_rect, border_radius=24)
 
-   
     def draw_button(rect,label):
         pygame.draw.rect(screen, (205, 193, 180), rect, border_radius=16)
         icon = font_btn.render(label, True, (255, 255, 255))
@@ -129,8 +121,6 @@ def draw_buttons(start_x, start_y, size, gap):
     draw_button(Button_swap_rect,   "⇄")
     draw_button(Button_delete_rect, "⊖")
 
-#
-    
     tip = font_btn.render("Press ESC to Menu", True, (80, 80, 80))
     screen.blit(tip, tip.get_rect(center=(WIDTH // 2, HEIGHT - 100)))
     pygame.display.flip()
@@ -160,44 +150,31 @@ def shift_right(grid):
     return new_grid
 
 def shift_up(grid):
-    
     new_grid = [[0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0]]
 
-    
     for c in range(4):
         col = []
-
         for r in range(4):
             if grid[r][c] != 0:
                 col.append(grid[r][c])
-
         i = 0
         while i < len(col) - 1: 
             if col[i] == col[i + 1]: 
                 col[i] *= 2         
                 col[i + 1] = 0     
             i += 1                     
-
-        
         col = [x for x in col if x != 0]
-
-        
         while len(col) < 4:
             col.append(0)
-
-        
         for r in range(4):
             new_grid[r][c] = col[r]
 
-    
     return new_grid
 
-
 def shift_down(grid):
-    
     new_grid = [[0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
@@ -205,11 +182,9 @@ def shift_down(grid):
 
     for c in range(4):
         col = []  
-
         for r in range(3, -1, -1):
             if grid[r][c] != 0: 
                 col.append(grid[r][c])
-
         i = 0
         while i < len(col) - 1:
             if col[i] == col[i + 1]:
@@ -217,18 +192,14 @@ def shift_down(grid):
                 col[i + 1] = 0 
             i += 1
         col = [x for x in col if x != 0]
-
-        
         while len(col) < 4:
             col.append(0)
-
         for r in range(4):
             new_grid[3 - r][c] = col[r]
 
-    
     return new_grid
 
-def is_game_over(): #เช็กว่าเกมจบหรือยัง
+def is_game_over(): #เช็กว่าเกมจบหรือยัง เตย
     for r in range(4):
         for c in range(4):
             if grid[r][c] == 0:
@@ -241,10 +212,10 @@ def is_game_over(): #เช็กว่าเกมจบหรือยัง
                 return False
     return True
 
-def get_score(): #ดูคะแนนตอนเกมจบ
+def get_score(): #ดูคะแนนตอนเกมจบ เตย
     return sum(sum(r) for r in grid)
 
-def show_game_over(score):
+def show_game_over(score): #หน้าจบเกม เตย
     screen.fill(BG_COLOR)
     text1 = font_title.render("Game Over", True, WHITE)
     text2 = font_num.render(f"Score: {score}", True, WHITE)
@@ -252,14 +223,14 @@ def show_game_over(score):
     screen.blit(text2, text2.get_rect(center=(WIDTH//2, HEIGHT//2 + 20)))
     pygame.display.flip()
     
-     # สร้างปุ่ม
+    #สร้างปุ่ม
     btn_width, btn_height = 260, 70
     play_again_rect = pygame.Rect(0, 0, btn_width, btn_height)
     menu_rect = pygame.Rect(0, 0, btn_width, btn_height)
     play_again_rect.center = (WIDTH//2, HEIGHT//2 + 150)
     menu_rect.center = (WIDTH//2, HEIGHT//2 + 240)
 
-    # วาดปุ่ม
+    #วาดปุ่ม
     pygame.draw.rect(screen, PLAYER1, play_again_rect, border_radius=10)
     pygame.draw.rect(screen, ORANGE, menu_rect, border_radius=10)
 
@@ -270,7 +241,7 @@ def show_game_over(score):
 
     pygame.display.flip()
 
-    # รอคลิก
+    #รอคลิก
     while True:
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
