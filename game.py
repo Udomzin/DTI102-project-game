@@ -93,6 +93,31 @@ def draw_game(): #วาดตารางเกมจัดให้อยู�
             if grid[r][c]:
                 text = font_num.render(str(grid[r][c]), True, TEXT_COLOR)
                 screen.blit(text, text.get_rect(center=rect.center))
+                
+     #undo,swap,delete 
+    board_w = size * 4 + gap * 3
+    board_h = size * 4 + gap * 3
+
+    bar_y = start_y + board_h + 25
+    bar_w = BTN_W * 3 + BTN_SPACE * 2
+    bar_x = (WIDTH - bar_w) // 2
+
+    undo_rect.topleft   = (bar_x + 0 * (BTN_W + BTN_SPACE), bar_y)
+    swap_rect.topleft   = (bar_x + 1 * (BTN_W + BTN_SPACE), bar_y)
+    delete_rect.topleft = (bar_x + 2 * (BTN_W + BTN_SPACE), bar_y)
+
+
+    backgound_rect = pygame.Rect(bar_x - 16, bar_y - 16, bar_w + 32, BTN_H + 32)
+    pygame.draw.rect(screen, (225, 218, 200), bar_bg_rect, border_radius=24)
+
+    def draw_button(rect, label):
+        pygame.draw.rect(screen, (205, 193, 180), rect, border_radius=16)
+        icon = font_btn.render(label, True, (255, 255, 255))
+        screen.blit(icon, icon.get_rect(center=rect.center))
+
+    draw_button(btn_undo_rect,  "↩")  
+    draw_button(btn_swap_rect,  "⇄")  
+    draw_button(btn_delete_rect,"⊖")  
 
     tip = font_btn.render("Press ESC to Menu", True, (80, 80, 80))
     screen.blit(tip, tip.get_rect(center=(WIDTH // 2, HEIGHT - 100)))
