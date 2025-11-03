@@ -16,7 +16,7 @@ background_path = os.path.join(current_dir, "background.png")
 background = pygame.image.load(background_path)
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
-# --- สี ---
+# สี แตง
 PURPLE = (90, 0, 140)
 WHITE = (255, 255, 255)
 PLAYER1 = (120, 80, 200)
@@ -26,25 +26,24 @@ BG_COLOR = (66, 1, 105)
 TILE_COLOR = (205, 193, 180) 
 TEXT_COLOR = (50, 50, 50)
 
-# ฟอนต์หัวข้อใหญ่
+# ฟอนต์หัวข้อใหญ่ แตง
 font_title = pygame.font.Font(None, 180)
-# ฟ้อนปุ่มเมนู
+
 font_btn = pygame.font.Font(None, 50)
-# ฟ้อนตัวเลขบนช่อง
+
 font_num = pygame.font.Font(None, 60)
-# นาฬิกาคุมเฟรมเรต 
+
 clock = pygame.time.Clock()
 
-# ปุ่มเมนูสี่เหลี่ยม player one , player two , how to play
+# ปุ่มเมนูสี่เหลี่ยม player one , player two , how to play แตง
 player1_rect = pygame.Rect(0, 0, 260, 70)
 player2_rect = pygame.Rect(0, 0, 260, 70)
 how_rect = pygame.Rect(0, 0, 260, 70)
-# คำนวนตำแหน่งกึ่งกลางจอ 
+
 center_x = WIDTH // 2
 start_y = HEIGHT // 2 - 50
-# ระยะฟ่างระหวางปุ่ม
 space = 90
-# จัดให้ทุกปุ่มอยุ่กลางจอ 
+
 player1_rect.center = (center_x, start_y)
 player2_rect.center = (center_x, start_y + space)
 how_rect.center = (center_x, start_y + space * 2)
@@ -94,7 +93,7 @@ def draw_game(): #วาดตารางเกมจัดให้อยู�
                 text = font_num.render(str(grid[r][c]), True, TEXT_COLOR)
                 screen.blit(text, text.get_rect(center=rect.center))
                 
-     #undo,swap,delete 
+     #undo,swap,delete แตง
     board_w = size * 4 + gap * 3
     board_h = size * 4 + gap * 3
 
@@ -118,7 +117,8 @@ def draw_game(): #วาดตารางเกมจัดให้อยู�
     draw_button(btn_undo_rect,  "↩")  
     draw_button(btn_swap_rect,  "⇄")  
     draw_button(btn_delete_rect,"⊖")  
-
+#
+    
     tip = font_btn.render("Press ESC to Menu", True, (80, 80, 80))
     screen.blit(tip, tip.get_rect(center=(WIDTH // 2, HEIGHT - 100)))
     pygame.display.flip()
