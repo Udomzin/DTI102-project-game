@@ -125,7 +125,7 @@ def draw_buttons(start_x, start_y, size, gap):
     screen.blit(tip, tip.get_rect(center=(WIDTH // 2, HEIGHT - 100)))
     pygame.display.flip()
 
-def shift_left(g): 
+def shift_left(g): #ขยับและรวมตัวเลขไปทางซ้าย ธี
     
     new_grid = [] 
     for r in g:
@@ -140,7 +140,7 @@ def shift_left(g):
         new_grid.append(row)
     return new_grid
 
-def shift_right(grid):
+def shift_right(grid): #ขยับและรวมตัวเลขไปทางขวา ธี
     
     new_grid = []
     for row in grid:
@@ -149,7 +149,7 @@ def shift_right(grid):
         new_grid.append(shifted[::-1])
     return new_grid
 
-def shift_up(grid):
+def shift_up(grid): #ขยับและรวมตัวเลขขึ้นข้างบน ธี
     new_grid = [[0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
@@ -174,7 +174,7 @@ def shift_up(grid):
 
     return new_grid
 
-def shift_down(grid):
+def shift_down(grid): #ขยับและรวมตัวเลขลงข้างล่าง ธี
     new_grid = [[0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
