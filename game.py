@@ -61,36 +61,33 @@ def reset_game():
     add_random_tile(g)
     return g
 
-# ปุ่มในเกม #undo,swap,delete แตง        
+# ปุ่ม 3 กลุ่มในเกม
 Button_W, Button_H, Button_SPACE = 120, 60, 18
 Button_undo_rect   = pygame.Rect(0, 0, Button_W, Button_H)
 Button_swap_rect   = pygame.Rect(0, 0, Button_W, Button_H)
 Button_delete_rect = pygame.Rect(0, 0, Button_W, Button_H)
 
-
 def draw_buttons(start_x, start_y, size, gap):
-    board_w = size * 4 + gap * 3
     board_h = size * 4 + gap * 3
-
     bar_y = start_y + board_h + 25
     bar_w = Button_W * 3 + Button_SPACE * 2
     bar_x = (WIDTH - bar_w) // 2
- 
-    Button_undo_rect.topleft   = (bar_x + 0 * (Button_W + Button_SPACE), bar_y)
-    Button_swap_rect.topleft   = (bar_x + 1 * (Button_W + Button_SPACE), bar_y)
+
+    Button_undo_rect.topleft   = (bar_x, bar_y)
+    Button_swap_rect.topleft   = (bar_x + Button_W + Button_SPACE, bar_y)
     Button_delete_rect.topleft = (bar_x + 2 * (Button_W + Button_SPACE), bar_y)
-    
-    bar_bg_rect = pygame.Rect(bar_x - 16, bar_y - 16, bar_w + 32, Button_H + 32)
-    pygame.draw.rect(screen, (225, 218, 200), bar_bg_rect, border_radius=24)
 
-    def draw_button(rect,label):
-        pygame.draw.rect(screen, (205, 193, 180), rect, border_radius=16)
-        icon = font_btn.render(label, True, (255, 255, 255))
-        screen.blit(icon, icon.get_rect(center=rect.center))
+   
+    def draw_button(rect, text):
+        pygame.draw.rect(screen, (205, 193, 180), rect, border_radius=10)
+        label = font_btn.render(text, True, (255, 255, 255))
+        label_rect = label.get_rect(center=rect.center)
+        screen.blit(label, label_rect)
 
-    draw_button(Button_undo_rect,   "undo")
-    draw_button(Button_swap_rect,   "swap")
-    draw_button(Button_delete_rect, "delete")
+    draw_button(Button_undo_rect, "Undo")
+    draw_button(Button_swap_rect, "Swap")
+    draw_button(Button_delete_rect, "Delete")
+
 
 
 def draw_menu():
