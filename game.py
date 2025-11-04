@@ -132,7 +132,6 @@ def draw_game(grid1, grid2=None):
         draw_board(grid1, WIDTH//2 - 600, HEIGHT//2 - 240, "P1")
         draw_board(grid2, WIDTH//2 + 120, HEIGHT//2 - 240, "P2")
     draw_buttons(WIDTH//2 - 240, HEIGHT//2 - 240, 120, 15)
-    screen.blit(tip, tip.get_rect(center=(WIDTH // 2, HEIGHT - 60)))
     pygame.display.flip()
 
 def shift_left(g): #ขยับและรวมตัวเลขไปทางซ้าย ธี
