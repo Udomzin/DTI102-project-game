@@ -88,9 +88,9 @@ def draw_buttons(start_x, start_y, size, gap):
         icon = font_btn.render(label, True, (255, 255, 255))
         screen.blit(icon, icon.get_rect(center=rect.center))
 
-    draw_button(Button_undo_rect,   "↩")
-    draw_button(Button_swap_rect,   "⇄")
-    draw_button(Button_delete_rect, "⊖")
+    draw_button(Button_undo_rect,   "undo")
+    draw_button(Button_swap_rect,   "swap")
+    draw_button(Button_delete_rect, "delete")
 
 
 def draw_menu():
@@ -132,8 +132,6 @@ def draw_game(grid1, grid2=None):
         draw_board(grid1, WIDTH//2 - 600, HEIGHT//2 - 240, "P1")
         draw_board(grid2, WIDTH//2 + 120, HEIGHT//2 - 240, "P2")
     draw_buttons(WIDTH//2 - 240, HEIGHT//2 - 240, 120, 15)
-    tip_text = "Press ESC to Menu" if grid2 is None else "ESC=Menu | WASD=P1 | Arrows=P2"
-    tip = font_btn.render(tip_text, True, (80, 80, 80))
     screen.blit(tip, tip.get_rect(center=(WIDTH // 2, HEIGHT - 60)))
     pygame.display.flip()
 
@@ -303,7 +301,7 @@ def main():
                         if grid1 != before:
                             add_random_tile(grid1)
 
-                            # --- ตรวจสอบว่าเกมจบหรือยัง ---
+                            #ตรวจสอบว่าเกมจบหรือยัง
                             if is_game_over(grid1):
                                 score = get_score(grid1)
                                 result = show_game_over(score)
