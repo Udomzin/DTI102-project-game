@@ -1,12 +1,12 @@
 import pygame, sys, random
 pygame.init()
 
-# --- หน้าจอ --- ฟลุค
+#หน้าจอ ฟลุค
 WIDTH, HEIGHT = 1440, 824
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("2048")
 
-# --- โหลดภาพพื้นหลัง --- 
+#โหลดภาพพื้นหลัง 
 #background = pygame.image.load("background.png")
 #background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # ปรับให้พอดีหน้าจอ
 
@@ -16,7 +16,7 @@ background_path = os.path.join(current_dir, "background.png")
 background = pygame.image.load(background_path)
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
-# สี แตง
+#สี แตง
 PURPLE = (90, 0, 140)
 WHITE = (255, 255, 255)
 PLAYER1 = (120, 80, 200)
@@ -26,13 +26,13 @@ BG_COLOR = (66, 1, 105)
 TILE_COLOR = (205, 193, 180) 
 TEXT_COLOR = (50, 50, 50)
 
-# ฟอนต์หัวข้อใหญ่ แตง
+#ฟอนต์หัวข้อใหญ่ แตง
 font_title = pygame.font.Font(None, 180)
 font_btn = pygame.font.Font(None, 50)
 font_num = pygame.font.Font(None, 60)
 clock = pygame.time.Clock()
 
-# ปุ่มเมนูสี่เหลี่ยม player one , player two , how to play แตง
+#ปุ่มเมนูสี่เหลี่ยม player one , player two , how to play แตง
 player1_rect = pygame.Rect(0, 0, 260, 70)
 player2_rect = pygame.Rect(0, 0, 260, 70)
 how_rect = pygame.Rect(0, 0, 260, 70)
@@ -45,7 +45,7 @@ player1_rect.center = (center_x, start_y)
 player2_rect.center = (center_x, start_y + space)
 how_rect.center = (center_x, start_y + space * 2)
 
-# --- ตารางเกม --- ฟลุค
+#ตารางเกม ฟลุค
 grid = [[0] * 4 for _ in range(4)]
 
 def add_random_tile(): #สุ่มตัวเลขเริ่มต้น ฟลุค
@@ -199,7 +199,7 @@ def shift_down(grid): #ขยับและรวมตัวเลขลงข
 
     return new_grid
 
-def is_game_over(): #เช็กว่าเกมจบหรือยัง เตย
+def is_game_over(): #เช็กว่าเกมจบรึยัง เตย
     for r in range(4):
         for c in range(4):
             if grid[r][c] == 0:
@@ -223,14 +223,14 @@ def show_game_over(score): #หน้าจบเกม เตย
     screen.blit(text2, text2.get_rect(center=(WIDTH//2, HEIGHT//2 + 20)))
     pygame.display.flip()
     
-    #สร้างปุ่ม
+    #สร้างปุ่ม เตย
     btn_width, btn_height = 260, 70
     play_again_rect = pygame.Rect(0, 0, btn_width, btn_height)
     menu_rect = pygame.Rect(0, 0, btn_width, btn_height)
     play_again_rect.center = (WIDTH//2, HEIGHT//2 + 150)
     menu_rect.center = (WIDTH//2, HEIGHT//2 + 240)
 
-    #วาดปุ่ม
+    #วาดปุ่ม เตย
     pygame.draw.rect(screen, PLAYER1, play_again_rect, border_radius=10)
     pygame.draw.rect(screen, ORANGE, menu_rect, border_radius=10)
 
@@ -256,6 +256,7 @@ def show_game_over(score): #หน้าจบเกม เตย
 def main(): #ฟลุค ธี
     global grid
     game_state = "menu"
+    result = None 
 
     while True:
         for e in pygame.event.get():
@@ -291,7 +292,11 @@ def main(): #ฟลุค ธี
                         add_random_tile()
                     if is_game_over():
                         score = get_score()
-                        show_game_over(score)
+                        result = show_game_over(score)
+                    if result == "play_again":
+                        reset_game()
+                        game_state = "play"
+                    elif result == "menu":
                         game_state = "menu"
 
         if game_state == "menu": draw_menu()
