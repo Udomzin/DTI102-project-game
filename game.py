@@ -143,6 +143,7 @@ def move_left(g):
                 row[i] *= 2
                 row[i + 1] = 0
             i += 1
+        row = [x for x in row if x != 0]
         row += [0] * (4 - len(row))
         new_grid.append(row)
     return new_grid
