@@ -131,7 +131,8 @@ def draw_game(grid1, grid2=None):
     draw_buttons(WIDTH//2 - 240, HEIGHT//2 - 240, 120, 15)
     pygame.display.flip()
 
-def shift_left(g): #ขยับและรวมตัวเลขไปทางซ้าย ธี
+#ขยับและรวมตัวเลขไปทางซ้าย ธี
+def move_left(g):
     
     new_grid = [] 
     for r in g:
@@ -146,16 +147,18 @@ def shift_left(g): #ขยับและรวมตัวเลขไปทา
         new_grid.append(row)
     return new_grid
 
-def shift_right(grid): #ขยับและรวมตัวเลขไปทางขวา ธี
+#ขยับและรวมตัวเลขไปทางขวา ธี
+def move_right(grid):
     
     new_grid = []
     for row in grid:
         reversed_row = row[::-1]
-        shifted = shift_left([reversed_row])[0]
-        new_grid.append(shifted[::-1])
+        move = move_left([reversed_row])[0]
+        new_grid.append(move[::-1])
     return new_grid
 
-def shift_up(grid): #ขยับและรวมตัวเลขขึ้นข้างบน ธี
+#ขยับและรวมตัวเลขขึ้นข้างบน ธี
+def move_up(grid):
     new_grid = [[0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
@@ -180,7 +183,8 @@ def shift_up(grid): #ขยับและรวมตัวเลขขึ้�
 
     return new_grid
 
-def shift_down(grid): #ขยับและรวมตัวเลขลงข้างล่าง ธี
+#ขยับและรวมตัวเลขลงข้างล่าง ธี
+def move_down(grid):
     new_grid = [[0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
@@ -289,10 +293,10 @@ def main():
 
                     if game_state == "play1":
                         before = [r[:] for r in grid1]
-                        if e.key in (pygame.K_LEFT, pygame.K_a): grid1 = shift_left(grid1)
-                        elif e.key in (pygame.K_RIGHT, pygame.K_d): grid1 = shift_right(grid1)
-                        elif e.key in (pygame.K_UP, pygame.K_w): grid1 = shift_up(grid1)
-                        elif e.key in (pygame.K_DOWN, pygame.K_s): grid1 = shift_down(grid1)
+                        if e.key in (pygame.K_LEFT, pygame.K_a): grid1 = move_left(grid1)
+                        elif e.key in (pygame.K_RIGHT, pygame.K_d): grid1 = move_right(grid1)
+                        elif e.key in (pygame.K_UP, pygame.K_w): grid1 = move_up(grid1)
+                        elif e.key in (pygame.K_DOWN, pygame.K_s): grid1 = move_down(grid1)
                         
                         if grid1 != before:
                             add_random_tile(grid1)
@@ -312,16 +316,16 @@ def main():
                         before2 = [r[:] for r in grid2]
 
                         # Player 1 (WASD)
-                        if e.key == pygame.K_a: grid1 = shift_left(grid1)
-                        elif e.key == pygame.K_d: grid1 = shift_right(grid1)
-                        elif e.key == pygame.K_w: grid1 = shift_up(grid1)
-                        elif e.key == pygame.K_s: grid1 = shift_down(grid1)
+                        if e.key == pygame.K_a: grid1 = move_left(grid1)
+                        elif e.key == pygame.K_d: grid1 = move_right(grid1)
+                        elif e.key == pygame.K_w: grid1 = move_up(grid1)
+                        elif e.key == pygame.K_s: grid1 = move_down(grid1)
 
                         # Player 2 (Arrow keys)
-                        if e.key == pygame.K_LEFT: grid2 = shift_left(grid2)
-                        elif e.key == pygame.K_RIGHT: grid2 = shift_right(grid2)
-                        elif e.key == pygame.K_UP: grid2 = shift_up(grid2)
-                        elif e.key == pygame.K_DOWN: grid2 = shift_down(grid2)
+                        if e.key == pygame.K_LEFT: grid2 = move_left(grid2)
+                        elif e.key == pygame.K_RIGHT: grid2 = move_right(grid2)
+                        elif e.key == pygame.K_UP: grid2 = move_up(grid2)
+                        elif e.key == pygame.K_DOWN: grid2 = move_down(grid2)
 
                         if grid1 != before1: add_random_tile(grid1)
                         if grid2 != before2: add_random_tile(grid2)
