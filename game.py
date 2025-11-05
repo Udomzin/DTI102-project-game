@@ -154,13 +154,8 @@ def draw_game(grid1, grid2=None):
     draw_buttons(WIDTH//2 - 240, HEIGHT//2 - 240, 120, 15)
     pygame.display.flip()
 
-<<<<<<< HEAD
-def shift_left(g): #ขยับและรวมตัวเลขไปทางซ้าย ธี
-=======
 #ขยับและรวมตัวเลขไปทางซ้าย ธี
 def move_left(g):
-    
->>>>>>> 63307f69e36cda985b13dcecec8307313dde19df
     new_grid = [] 
     for r in g:
         row = [x for x in r if x != 0]
@@ -175,13 +170,8 @@ def move_left(g):
         new_grid.append(row)
     return new_grid
 
-<<<<<<< HEAD
-def shift_right(grid): #ขยับและรวมตัวเลขไปทางขวา ธี
-=======
 #ขยับและรวมตัวเลขไปทางขวา ธี
 def move_right(grid):
-    
->>>>>>> 63307f69e36cda985b13dcecec8307313dde19df
     new_grid = []
     for row in grid:
         reversed_row = row[::-1]
