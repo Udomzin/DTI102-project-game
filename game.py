@@ -130,7 +130,7 @@ def draw_board(grid, start_x, start_y, label):
             x, y = start_x + c * (size + gap), start_y + r * (size + gap)
             rect = pygame.Rect(x, y, size, size)
             pygame.draw.rect(screen, TILE_COLOR, rect, border_radius=8)
-            value = grid[r][c]:
+            value = grid[r][c]
             
             color = COLOR_SET.get(value, (60, 58, 50))
             pygame.draw.rect(screen, color, rect, border_radius=8)
