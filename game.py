@@ -80,27 +80,31 @@ def reset_game():
 Button_W = 160
 Button_H = 60
 Button_SPACE = 20
-bar_w = Button_W * 3 + Button_SPACE * 2
-bar_x = (WIDTH - bar_w) // 2
-bar_y = HEIGHT // 2
 
-undo_rect   = pygame.Rect(bar_x, bar_y, Button_W, Button_H)
-swap_rect   = pygame.Rect(bar_x + Button_W + Button_SPACE, bar_y, Button_W, Button_H)
-delete_rect = pygame.Rect(bar_x + 2 * (Button_W + Button_SPACE), bar_y, Button_W, Button_H)
+def draw_buttons(start_x, start_y, size, gap):
+    board_h = size * 4 + gap * 3
+    bar_y = start_y + board_h + 25
+    bar_w = Button_W * 3 + Button_SPACE * 2
+    bar_x = (WIDTH - bar_w) // 2
 
-pygame.draw.rect(screen, (205, 193, 180), undo_rect, border_radius=10)
-pygame.draw.rect(screen, (205, 193, 180), swap_rect, border_radius=10)
-pygame.draw.rect(screen, (205, 193, 180), delete_rect, border_radius=10)
+    # กล่องปุ่ม
+    undo_rect   = pygame.Rect(bar_x, bar_y, Button_W, Button_H)
+    swap_rect   = pygame.Rect(bar_x + Button_W + Button_SPACE, bar_y, Button_W, Button_H)
+    delete_rect = pygame.Rect(bar_x + 2 * (Button_W + Button_SPACE), bar_y, Button_W, Button_H)
 
-text1 = font_btn.render("Undo (1)", True, (255, 255, 255))
-text2 = font_btn.render("Swap (2)", True, (255, 255, 255))
-text3 = font_btn.render("Delete (3)", True, (255, 255, 255))
+    # วาดปุ่ม
+    pygame.draw.rect(screen, (205, 193, 180), undo_rect, border_radius=10)
+    pygame.draw.rect(screen, (205, 193, 180), swap_rect, border_radius=10)
+    pygame.draw.rect(screen, (205, 193, 180), delete_rect, border_radius=10)
 
-screen.blit(text1, text1.get_rect(center=undo_rect.center))
-screen.blit(text2, text2.get_rect(center=swap_rect.center))
-screen.blit(text3, text3.get_rect(center=delete_rect.center))
+    # วาดข้อความ
+    t1 = font_btn.render("Undo (1)", True, (255, 255, 255))
+    t2 = font_btn.render("Swap (2)", True, (255, 255, 255))
+    t3 = font_btn.render("Delete (3)", True, (255, 255, 255))
+    screen.blit(t1, t1.get_rect(center=undo_rect.center))
+    screen.blit(t2, t2.get_rect(center=swap_rect.center))
+    screen.blit(t3, t3.get_rect(center=delete_rect.center))
 
-pygame.display.flip()
 
  #วาดตารางเกมจัดให้อยู้ตรงกลางหน้าจอ ฟลุค
 def draw_board(grid, start_x, start_y, label):
