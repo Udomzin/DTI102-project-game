@@ -6,16 +6,30 @@ WIDTH, HEIGHT = 1440, 824
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("2048")
 
-
 #โหลดภาพพื้นหลัง 
 #background = pygame.image.load("background.png")
 #background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # ปรับให้พอดีหน้าจอ
-
 
 current_dir = os.path.dirname(__file__)
 background_path = os.path.join(current_dir, "background.png")
 background = pygame.image.load(background_path)
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+
+#กำหนดสีช่อง เตย
+COLOR_MAP = {
+    0: (180, 160, 140),
+    2: (210, 255, 120),
+    4: (220, 180, 255),
+    8: (250, 180, 110),
+    16: (255, 140, 60),
+    32: (200, 120, 255),
+    64: (160, 130, 255),
+    128: (120, 50, 160),
+    256: (150, 80, 200),
+    512: (180, 100, 240),
+    1024: (210, 120, 255),
+    2048: (255, 220, 130)
+}
 
 #สี แตง
 PURPLE = (90, 0, 140)
@@ -106,7 +120,7 @@ def draw_menu():
     pygame.display.flip()
 
  #วาดตารางเกมจัดให้อยู้ตรงกลางหน้าจอ ฟลุค
-def draw_board(grid, start_x, start_y, label=None):
+def draw_board(grid, start_x, start_y, label):
     size, gap = 120, 15
     if label:
         lbl = font_btn.render(label, True, WHITE)
@@ -117,7 +131,18 @@ def draw_board(grid, start_x, start_y, label=None):
             rect = pygame.Rect(x, y, size, size)
             pygame.draw.rect(screen, TILE_COLOR, rect, border_radius=8)
             if grid[r][c]:
-                text = font_num.render(str(grid[r][c]), True, TEXT_COLOR)
+            color = COLOR_MAP.get(value, (60, 58, 50))
+            pygame.draw.rect(screen, color, rect, border_radius=8)
+
+            if value: #ถ้าช่องมีตัวเลข จะเลือกสีตัวเลขตามค่า
+                if value in (2, 4):
+                    text_color = (80, 80, 80)
+                elif value >= 1024:
+                    text_color = (60, 50, 40)
+                else:
+                    text_color = (255, 255, 255)
+
+                text = font_num.render(str(value), True, text_color)
                 screen.blit(text, text.get_rect(center=rect.center))
 
 # วาดเกมเช็คสองผู้เล่น ฟลุค
@@ -213,13 +238,7 @@ def move_down(grid):
 def is_game_over(grid): #เช็กว่าเกมจบรึยัง เตย
     for r in range(4):
         for c in range(4):
-            if grid[r][c] == 0:
-                return False
-    for r in range(4):
-        for c in range(4):
-            if c < 3 and grid[r][c] == grid[r][c + 1]:
-                return False
-            if r < 3 and grid[r][c] == grid[r + 1][c]:
+            if grid[r][c] == 0 or (c < 3 and grid[r][c] == grid[r][c + 1]) or (r < 3 and grid[r][c] == grid[r + 1][c]):
                 return False
     return True
 
@@ -252,7 +271,7 @@ def show_game_over(score): #หน้าจบเกม เตย
 
     pygame.display.flip()
 
-        #รอคลิก
+    #รอคลิก
     while True:
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
