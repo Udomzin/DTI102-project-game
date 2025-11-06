@@ -102,8 +102,6 @@ def draw_buttons(start_x, start_y, size, gap):
     draw_button(Button_swap_rect, "Swap")
     draw_button(Button_delete_rect, "Delete")
 
-
-
 def draw_menu():
     screen.blit(background, (0, 0))
     title = font_title.render("2048", True, (250, 220, 133))
@@ -284,7 +282,6 @@ def show_game_over(score): #หน้าจบเกม เตย
                 elif menu_rect.collidepoint(e.pos):
                     return "menu"
 
-
 #ลูปหลักของเกม ฟลุค ธี เตย
 def main():
     game_state = "menu"
@@ -330,7 +327,6 @@ def main():
                                     grid1 = reset_game()
                                 elif result == "menu":
                                     game_state = "menu"
-
 
                     elif game_state == "play2":
                         before1 = [r[:] for r in grid1]
