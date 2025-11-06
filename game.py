@@ -16,7 +16,7 @@ background = pygame.image.load(background_path)
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
 #กำหนดสีช่อง เตย
-COLOR_MAP = {
+COLOR_SET = {
     0: (180, 160, 140),
     2: (210, 255, 120),
     4: (220, 180, 255),
@@ -130,8 +130,9 @@ def draw_board(grid, start_x, start_y, label):
             x, y = start_x + c * (size + gap), start_y + r * (size + gap)
             rect = pygame.Rect(x, y, size, size)
             pygame.draw.rect(screen, TILE_COLOR, rect, border_radius=8)
-            if grid[r][c]:
-            color = COLOR_MAP.get(value, (60, 58, 50))
+            value = grid[r][c]:
+            
+            color = COLOR_SET.get(value, (60, 58, 50))
             pygame.draw.rect(screen, color, rect, border_radius=8)
 
             if value: #ถ้าช่องมีตัวเลข จะเลือกสีตัวเลขตามค่า
