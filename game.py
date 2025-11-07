@@ -101,6 +101,7 @@ def draw_buttons(start_x, start_y, size, gap):
     t1 = font_btn.render("Undo (1)", True, (255, 255, 255))
     t2 = font_btn.render("Swap (2)", True, (255, 255, 255))
     t3 = font_btn.render("Delete (3)", True, (255, 255, 255))
+    
     screen.blit(t1, t1.get_rect(center=undo_rect.center))
     screen.blit(t2, t2.get_rect(center=swap_rect.center))
     screen.blit(t3, t3.get_rect(center=delete_rect.center))
