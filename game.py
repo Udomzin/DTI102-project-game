@@ -71,9 +71,6 @@ BUTTONS_P2 = {"undo": None, "swap": None, "delete": None}
 HIST1 = []
 HIST2 = []
 
-
-
-
 #ปุ่มเมนูสี่เหลี่ยม player one , player two , how to play แตง
 player1_rect = pygame.Rect(0, 0, 260, 70)
 player2_rect = pygame.Rect(0, 0, 260, 70)
@@ -103,6 +100,11 @@ def reset_game():
     return g
 
 # สร้าง draw ปุ่ม 
+
+Button_W = 160
+Button_H = 60
+Button_SPACE = 20
+
 def draw_buttons(start_x, start_y, size, gap, for_player="p1"):
     board_w = size * 4 + gap * 3
     board_h = size * 4 + gap * 3
@@ -161,16 +163,33 @@ def draw_board(grid, start_x, start_y, label):
                 text = font_num.render(str(value), True, text_color)
                 screen.blit(text, text.get_rect(center=rect.center))
 
-# วาดเกมเช็คสองผู้เล่น ฟลุค
+# วาดเกมเช็คสองผู้เล่น ฟลุค , แตงแก้ 
+
 def draw_game(grid1, grid2=None):
     screen.blit(background, (0, 0))
+    size, gap = 120, 15
+#อันนี้  player 1 
     if grid2 is None:
-        draw_board(grid1, WIDTH//2 - 240, HEIGHT//2 - 240, "P1")
+        p1_x = WIDTH//2 - 240
+        p1_y = HEIGHT//2 - 240
+        draw_board(grid1, p1_x, p1_y, "P1")
+        draw_buttons(p1_x, p1_y, size, gap, for_player="p1")
+    #อันนี้  player 2
     else:
-        draw_board(grid1, WIDTH//2 - 600, HEIGHT//2 - 240, "P1")
-        draw_board(grid2, WIDTH//2 + 120, HEIGHT//2 - 240, "P2")
-    draw_buttons(WIDTH//2 - 240, HEIGHT//2 - 240, 120, 15)
+        p1_x = WIDTH//2 - 600
+        p1_y = HEIGHT//2 - 240
+        p2_x = WIDTH//2 + 120
+        p2_y = HEIGHT//2 - 240
+
+        draw_board(grid1, p1_x, p1_y, "P1")
+        draw_board(grid2, p2_x, p2_y, "P2")
+
+        # ปุ่มใต้แต่ละบอร์ด (แยกชุดระหว่าง P1/P2)
+        draw_buttons(p1_x, p1_y, size, gap, for_player="p1")
+        draw_buttons(p2_x, p2_y, size, gap, for_player="p2")
+
     pygame.display.flip()
+
     
 def draw_menu():
     if background:
