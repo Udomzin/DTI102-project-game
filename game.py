@@ -144,6 +144,34 @@ def draw_game(grid1, grid2=None):
         draw_board(grid2, WIDTH//2 + 120, HEIGHT//2 - 240, "P2")
     draw_buttons(WIDTH//2 - 240, HEIGHT//2 - 240, 120, 15)
     pygame.display.flip()
+    
+def draw_menu():
+    # พื้นหลัง
+    if background:
+        screen.blit(background, (0, 0))
+    else:
+        screen.fill(BG_COLOR)
+
+    # หัวข้อใหญ่
+    title = font_title.render("2048", True, WHITE)
+    screen.blit(title, title.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 180)))
+
+    # วาดปุ่ม 3 ปุ่ม
+    pygame.draw.rect(screen, PLAYER1, player1_rect, border_radius=12)
+    pygame.draw.rect(screen, PLAYER2, player2_rect, border_radius=12)
+    pygame.draw.rect(screen, ORANGE,   how_rect,   border_radius=12)
+
+    # ข้อความบนปุ่ม
+    t1 = font_btn.render("Player One", True, WHITE)
+    t2 = font_btn.render("Player Two", True, WHITE)
+    t3 = font_btn.render("How to Play", True, WHITE)
+
+    # วางข้อความให้ตรงกลางปุ่ม
+    screen.blit(t1, t1.get_rect(center=player1_rect.center))
+    screen.blit(t2, t2.get_rect(center=player2_rect.center))
+    screen.blit(t3, t3.get_rect(center=how_rect.center))
+
+    pygame.display.flip()
 
 #ขยับและรวมตัวเลขไปทางซ้าย ธี
 def move_left(g):
