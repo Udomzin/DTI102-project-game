@@ -358,14 +358,12 @@ def main():
                     if player1_rect.collidepoint(e.pos):
                         grid1 = reset_game()
                         game_state = "play1"
-                elif player2_rect.collidepoint(e.pos):
-                         grid1 = reset_game()
-                         grid2 = reset_game()
-                         HIST1.clear()
-                         HIST2.clear()
-                        game_state = "play2
-                elif how_rect.collidepoint(e.pos):
-                        print("WASD / ลูกศร เพื่อเลื่อนช่องเลข")
+            elif player2_rect.collidepoint(e.pos):
+                        grid1 = reset_game()
+                        grid2 = reset_game()
+                        game_state = "play2"
+            elif how_rect.collidepoint(e.pos):
+                print("WASD / ลูกศร เพื่อเลื่อนช่องเลข")
 
             elif game_state in ("play1", "play2"):
                 if e.type == pygame.KEYDOWN:
