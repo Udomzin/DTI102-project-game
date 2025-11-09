@@ -10,6 +10,7 @@ pygame.display.set_caption("2048")
 #background = pygame.image.load("background.png")
 #background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # ปรับให้พอดีหน้าจอ
 
+#โหลดภาพพื้นหลังเเละปรับขนาด
 current_dir = os.path.dirname(__file__)
 background_path = os.path.join(current_dir, "background.png")
 background = pygame.image.load(background_path)
@@ -99,7 +100,7 @@ def reset_game():
     add_random_tile(g)
     return g
 
-# สร้าง draw ปุ่ม 
+#สร้าง draw ปุ่ม 
 Button_W = 160
 Button_H = 60
 Button_SPACE = 20
@@ -111,7 +112,7 @@ def draw_buttons(start_x, start_y, size, gap, for_player="p1"):
     bar_w = Button_W * 3 + Button_SPACE * 2
     bar_x = start_x + (board_w - bar_w) // 2
 
-    # กล่องปุ่ม
+    #กล่องปุ่ม
     undo_rect   = pygame.Rect(bar_x, bar_y, Button_W, Button_H)
     swap_rect   = pygame.Rect(bar_x + Button_W + Button_SPACE, bar_y, Button_W, Button_H)
     delete_rect = pygame.Rect(bar_x + 2 * (Button_W + Button_SPACE), bar_y, Button_W, Button_H)
@@ -126,15 +127,16 @@ def draw_buttons(start_x, start_y, size, gap, for_player="p1"):
     screen.blit(t2, t2.get_rect(center=swap_rect.center))
     screen.blit(t3, t3.get_rect(center=delete_rect.center))
 
-    # เก็บ rect เพื่อจับคลิก แยกผู้เล่น
+    #เก็บ rect เพื่อจับคลิก แยกผู้เล่น
     target = BUTTONS_P1 if for_player == "p1" else BUTTONS_P2
     target["undo"]   = undo_rect
     target["swap"]   = swap_rect
     target["delete"] = delete_rect
 
- #วาดตารางเกมจัดให้อยู้ตรงกลางหน้าจอ ฟลุค
+#วาดตารางเกมจัดให้อยู้ตรงกลางหน้าจอ ฟลุค
 def draw_board(grid, start_x, start_y, label):
     size, gap = 120, 15
+    
     if label:
         lbl = font_btn.render(label, True, WHITE)
         screen.blit(lbl, (start_x + 90, start_y - 60))
@@ -145,10 +147,12 @@ def draw_board(grid, start_x, start_y, label):
             pygame.draw.rect(screen, TILE_COLOR, rect, border_radius=8)
             value = grid[r][c]
             
+            #กำหนดสีในเเต่ละช่อง เตย
             color = COLOR_SET.get(value, (60, 58, 50))
             pygame.draw.rect(screen, color, rect, border_radius=8)
 
-            if value: #ถ้าช่องมีตัวเลข จะเลือกสีตัวเลขตามค่า
+            #ถ้าช่องมีตัวเลข จะเลือกสีตัวเลขตามค่า เตย
+            if value:
                 if value in (2, 4):
                     text_color = (80, 80, 80)
                 elif value >= 1024:
@@ -289,17 +293,20 @@ def move_down(grid):
 
     return new_grid
 
-def is_game_over(grid): #เช็กว่าเกมจบรึยัง เตย
+#เช็กว่าเกมจบรึยัง เตย
+def is_game_over(grid):
     for r in range(4):
         for c in range(4):
             if grid[r][c] == 0 or (c < 3 and grid[r][c] == grid[r][c + 1]) or (r < 3 and grid[r][c] == grid[r + 1][c]):
                 return False
     return True
 
-def get_score(grid): #ดูคะแนนตอนเกมจบ เตย
+#ดูคะแนนตอนเกมจบ เตย
+def get_score(grid): 
     return sum(sum(r) for r in grid)
 
-def show_game_over(score): #หน้าจบเกม เตย
+#หน้าจบเกม เตย
+def show_game_over(score):
     screen.fill(BG_COLOR)
     text1 = font_title.render("Game Over", True, WHITE)
     text2 = font_num.render(f"Score: {score}", True, WHITE)
@@ -374,7 +381,7 @@ def main():
                         if grid1 != before:
                             add_random_tile(grid1)
 
-                            #ตรวจสอบว่าเกมจบหรือยัง
+                            #ตรวจสอบว่าเกมจบหรือยัง เตย
                             if is_game_over(grid1):
                                 score = get_score(grid1)
                                 result = show_game_over(score)
