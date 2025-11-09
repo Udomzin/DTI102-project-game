@@ -47,6 +47,33 @@ font_btn = pygame.font.Font(None, 50)
 font_num = pygame.font.Font(None, 60)
 clock = pygame.time.Clock()
 
+# 3 ปุ่ม
+def copy_grid(g):
+    return [row[:] for row in g]
+
+def swap_two_tiles(grid):
+    cells = [(r, c) for r in range(4) for c in range(4) if grid[r][c] != 0]
+    if len(cells) >= 2:
+        (r1, c1), (r2, c2) = random.sample(cells, 2)
+        grid[r1][c1], grid[r2][c2] = grid[r2][c2], grid[r1][c1]
+
+def delete_one_tile(grid):
+    cells = [(r, c) for r in range(4) for c in range(4) if grid[r][c] != 0]
+    if cells:
+        r, c = random.choice(cells)
+        grid[r][c] = 0
+
+# เก็บ rect ของปุ่มใต้บอร์ดแต่ละผู้เล่น
+BUTTONS_P1 = {"undo": None, "swap": None, "delete": None}
+BUTTONS_P2 = {"undo": None, "swap": None, "delete": None}
+
+# ประวัติของแต่ละผู้เล่น (ไว้สำหรับ Undo)
+HIST1 = []
+HIST2 = []
+
+
+
+
 #ปุ่มเมนูสี่เหลี่ยม player one , player two , how to play แตง
 player1_rect = pygame.Rect(0, 0, 260, 70)
 player2_rect = pygame.Rect(0, 0, 260, 70)
@@ -75,36 +102,36 @@ def reset_game():
     add_random_tile(g)
     return g
 
-# ปุ่ม 3 กลุ่มในเกม
-
-Button_W = 160
-Button_H = 60
-Button_SPACE = 20
-
-def draw_buttons(start_x, start_y, size, gap):
+# สร้าง draw ปุ่ม 
+def draw_buttons(start_x, start_y, size, gap, for_player="p1"):
+    board_w = size * 4 + gap * 3
     board_h = size * 4 + gap * 3
     bar_y = start_y + board_h + 25
     bar_w = Button_W * 3 + Button_SPACE * 2
-    bar_x = (WIDTH - bar_w) // 2
+    bar_x = start_x + (board_w - bar_w) // 2
 
     # กล่องปุ่ม
     undo_rect   = pygame.Rect(bar_x, bar_y, Button_W, Button_H)
     swap_rect   = pygame.Rect(bar_x + Button_W + Button_SPACE, bar_y, Button_W, Button_H)
     delete_rect = pygame.Rect(bar_x + 2 * (Button_W + Button_SPACE), bar_y, Button_W, Button_H)
 
-    # วาดปุ่ม
-    pygame.draw.rect(screen, (205, 193, 180), undo_rect, border_radius=10)
-    pygame.draw.rect(screen, (205, 193, 180), swap_rect, border_radius=10)
-    pygame.draw.rect(screen, (205, 193, 180), delete_rect, border_radius=10)
 
-    # วาดข้อความ
-    t1 = font_btn.render("Undo (1)", True, (255, 255, 255))
-    t2 = font_btn.render("Swap (2)", True, (255, 255, 255))
-    t3 = font_btn.render("Delete (3)", True, (255, 255, 255))
-    
+    for rect in (undo_rect, swap_rect, delete_rect):
+        pygame.draw.rect(screen, (205, 193, 180), rect, border_radius=10)
+
+    t1 = font_btn.render("Undo", True, (255, 255, 255))
+    t2 = font_btn.render("Swap", True, (255, 255, 255))
+    t3 = font_btn.render("Delete", True, (255, 255, 255))
     screen.blit(t1, t1.get_rect(center=undo_rect.center))
     screen.blit(t2, t2.get_rect(center=swap_rect.center))
     screen.blit(t3, t3.get_rect(center=delete_rect.center))
+
+    # เก็บ rect เพื่อจับคลิก แยกผู้เล่น
+    target = BUTTONS_P1 if for_player == "p1" else BUTTONS_P2
+    target["undo"]   = undo_rect
+    target["swap"]   = swap_rect
+    target["delete"] = delete_rect
+
 
 
  #วาดตารางเกมจัดให้อยู้ตรงกลางหน้าจอ ฟลุค
@@ -146,7 +173,6 @@ def draw_game(grid1, grid2=None):
     pygame.display.flip()
     
 def draw_menu():
-    # พื้นหลัง
     if background:
         screen.blit(background, (0, 0))
     else:
@@ -161,12 +187,10 @@ def draw_menu():
     pygame.draw.rect(screen, PLAYER2, player2_rect, border_radius=12)
     pygame.draw.rect(screen, ORANGE,   how_rect,   border_radius=12)
 
-    # ข้อความบนปุ่ม
     t1 = font_btn.render("Player One", True, WHITE)
     t2 = font_btn.render("Player Two", True, WHITE)
     t3 = font_btn.render("How to Play", True, WHITE)
 
-    # วางข้อความให้ตรงกลางปุ่ม
     screen.blit(t1, t1.get_rect(center=player1_rect.center))
     screen.blit(t2, t2.get_rect(center=player2_rect.center))
     screen.blit(t3, t3.get_rect(center=how_rect.center))
