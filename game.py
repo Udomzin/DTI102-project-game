@@ -100,7 +100,6 @@ def reset_game():
     return g
 
 # สร้าง draw ปุ่ม 
-
 Button_W = 160
 Button_H = 60
 Button_SPACE = 20
@@ -117,7 +116,6 @@ def draw_buttons(start_x, start_y, size, gap, for_player="p1"):
     swap_rect   = pygame.Rect(bar_x + Button_W + Button_SPACE, bar_y, Button_W, Button_H)
     delete_rect = pygame.Rect(bar_x + 2 * (Button_W + Button_SPACE), bar_y, Button_W, Button_H)
 
-
     for rect in (undo_rect, swap_rect, delete_rect):
         pygame.draw.rect(screen, (205, 193, 180), rect, border_radius=10)
 
@@ -133,8 +131,6 @@ def draw_buttons(start_x, start_y, size, gap, for_player="p1"):
     target["undo"]   = undo_rect
     target["swap"]   = swap_rect
     target["delete"] = delete_rect
-
-
 
  #วาดตารางเกมจัดให้อยู้ตรงกลางหน้าจอ ฟลุค
 def draw_board(grid, start_x, start_y, label):
@@ -164,17 +160,16 @@ def draw_board(grid, start_x, start_y, label):
                 screen.blit(text, text.get_rect(center=rect.center))
 
 # วาดเกมเช็คสองผู้เล่น ฟลุค , แตงแก้ 
-
 def draw_game(grid1, grid2=None):
     screen.blit(background, (0, 0))
     size, gap = 120, 15
-#อันนี้  player 1 
+    #อันนี้player 1 
     if grid2 is None:
         p1_x = WIDTH//2 - 240
         p1_y = HEIGHT//2 - 240
         draw_board(grid1, p1_x, p1_y, "P1")
         draw_buttons(p1_x, p1_y, size, gap, for_player="p1")
-    #อันนี้  player 2
+    #อันนี้player 2
     else:
         p1_x = WIDTH//2 - 600
         p1_y = HEIGHT//2 - 240
@@ -190,7 +185,6 @@ def draw_game(grid1, grid2=None):
 
     pygame.display.flip()
 
-    
 def draw_menu():
     if background:
         screen.blit(background, (0, 0))
@@ -331,7 +325,7 @@ def show_game_over(score): #หน้าจบเกม เตย
 
     pygame.display.flip()
 
-    #รอคลิก
+    #รอคลิก เตย
     while True:
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
@@ -358,12 +352,12 @@ def main():
                     if player1_rect.collidepoint(e.pos):
                         grid1 = reset_game()
                         game_state = "play1"
-                elif player2_rect.collidepoint(e.pos):
+                    elif player2_rect.collidepoint(e.pos):
                         grid1 = reset_game()
                         grid2 = reset_game()
                         game_state = "play2"
-                elif how_rect.collidepoint(e.pos):
-                print("WASD / ลูกศร เพื่อเลื่อนช่องเลข")
+                    elif how_rect.collidepoint(e.pos):
+                        print("WASD / ลูกศร เพื่อเลื่อนช่องเลข")
 
             elif game_state in ("play1", "play2"):
                 if e.type == pygame.KEYDOWN:
@@ -408,7 +402,7 @@ def main():
                         if grid1 != before1: add_random_tile(grid1)
                         if grid2 != before2: add_random_tile(grid2)
 
-        # วาด หน้าจอ
+        # วาดหน้าจอ
         if game_state == "menu":
             draw_menu()
         elif game_state == "play1":
