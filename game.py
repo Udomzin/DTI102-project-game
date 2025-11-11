@@ -217,7 +217,7 @@ def draw_menu():
 
     pygame.display.flip()
 
-#ขยับและรวมตัวเลขไปทางซ้าย ธี
+#ขยับและรวมตัวเลขไปทางซ้าย ธี ,ฟลุคเพิ่มคะแนน
 def move_left(g):
     new_grid = []
     gain = 0
@@ -236,7 +236,7 @@ def move_left(g):
     return new_grid, gain
 
 
-#ขยับและรวมตัวเลขไปทางขวา ธี
+#ขยับและรวมตัวเลขไปทางขวา ธี,ฟลุคเพิ่มคะแนน
 def move_right(grid):
     new_grid = []
     gain = 0
@@ -248,7 +248,7 @@ def move_right(grid):
     return new_grid, gain
 
 
-#ขยับและรวมตัวเลขขึ้นข้างบน ธี
+#ขยับและรวมตัวเลขขึ้นข้างบน ธี,ฟลุคเพิ่มคะแนน
 def move_up(grid):
     new_grid = [[0, 0, 0, 0],
             [0, 0, 0, 0],
@@ -276,7 +276,7 @@ def move_up(grid):
 
     return new_grid , gain
 
-#ขยับและรวมตัวเลขลงข้างล่าง ธี
+#ขยับและรวมตัวเลขลงข้างล่าง ธี,ฟลุคเพิ่มคะแนน
 def move_down(grid):
     new_grid = [[0, 0, 0, 0],
             [0, 0, 0, 0],
@@ -355,7 +355,7 @@ def show_game_over(score):
                 elif menu_rect.collidepoint(e.pos):
                     return "menu"
 
-#ลูปหลักของเกม ฟลุค ธี เตย
+#ลูปหลักของเกม ฟลุค(ส่วน+คะแนน) ธี เตย
 def main():
     global score_p1, score_p2   
     score_p1, score_p2 = 0, 0   
