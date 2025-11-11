@@ -82,6 +82,7 @@ space = 90
 player1_rect.center = (center_x, start_y)
 player2_rect.center = (center_x, start_y + space)
 how_rect.center = (center_x, start_y + space * 2)
+score_p1, score_p2 = 0, 0
 
 #ตารางเกม ฟลุค
 def new_grid():
@@ -168,28 +169,28 @@ def draw_game(grid1, grid2=None):
     screen.blit(background, (0, 0))
     size, gap = 120, 15
     
-    #อันนี้player 1 
+    # โหมดผู้เล่นเดียว
     if grid2 is None:
         p1_x = WIDTH//2 - 240
         p1_y = HEIGHT//2 - 240
-        draw_board(grid1, p1_x, p1_y, "P1")
+        draw_board(grid1, p1_x, p1_y, f"P1 | Score: {score_p1}")
         draw_buttons(p1_x, p1_y, size, gap, for_player="p1")
         
-    #อันนี้player 2
+    # โหมดผู้เล่นสองคน
     else:
         p1_x = WIDTH//2 - 600
         p1_y = HEIGHT//2 - 240
         p2_x = WIDTH//2 + 120
         p2_y = HEIGHT//2 - 240
 
-        draw_board(grid1, p1_x, p1_y, "P1")
-        draw_board(grid2, p2_x, p2_y, "P2")
+        draw_board(grid1, p1_x, p1_y, f"P1 | Score: {score_p1}")
+        draw_board(grid2, p2_x, p2_y, f"P2 | Score: {score_p2}")
 
-        # ปุ่มใต้แต่ละบอร์ด (แยกชุดระหว่าง P1/P2)
         draw_buttons(p1_x, p1_y, size, gap, for_player="p1")
         draw_buttons(p2_x, p2_y, size, gap, for_player="p2")
 
     pygame.display.flip()
+
 
 def draw_menu():
     if background:
@@ -218,8 +219,8 @@ def draw_menu():
 
 #ขยับและรวมตัวเลขไปทางซ้าย ธี
 def move_left(g):
-    
-    new_grid = [] 
+    new_grid = []
+    gain = 0
     for r in g:
         row = [x for x in r if x != 0]
         i = 0
@@ -227,21 +228,25 @@ def move_left(g):
             if row[i] == row[i + 1]:
                 row[i] *= 2
                 row[i + 1] = 0
+                gain += 1  
             i += 1
         row = [x for x in row if x != 0]
         row += [0] * (4 - len(row))
         new_grid.append(row)
-    return new_grid
+    return new_grid, gain
+
 
 #ขยับและรวมตัวเลขไปทางขวา ธี
 def move_right(grid):
-    
     new_grid = []
+    gain = 0
     for row in grid:
         reversed_row = row[::-1]
-        move = move_left([reversed_row])[0]
-        new_grid.append(move[::-1])
-    return new_grid
+        moved, g = move_left([reversed_row])
+        new_grid.append(moved[0][::-1])
+        gain += g
+    return new_grid, gain
+
 
 #ขยับและรวมตัวเลขขึ้นข้างบน ธี
 def move_up(grid):
@@ -249,6 +254,7 @@ def move_up(grid):
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0]]
+    gain = 0
 
     for c in range(4):
         col = []
@@ -260,6 +266,7 @@ def move_up(grid):
             if col[i] == col[i + 1]: 
                 col[i] *= 2         
                 col[i + 1] = 0     
+                gain += 1
             i += 1                     
         col = [x for x in col if x != 0]
         while len(col) < 4:
@@ -267,7 +274,7 @@ def move_up(grid):
         for r in range(4):
             new_grid[r][c] = col[r]
 
-    return new_grid
+    return new_grid , gain
 
 #ขยับและรวมตัวเลขลงข้างล่าง ธี
 def move_down(grid):
@@ -275,6 +282,7 @@ def move_down(grid):
             [0, 0, 0, 0],
             [0, 0, 0, 0],
             [0, 0, 0, 0]]
+    gain = 0
 
     for c in range(4):
         col = []  
@@ -286,6 +294,7 @@ def move_down(grid):
             if col[i] == col[i + 1]:
                 col[i] *= 2 
                 col[i + 1] = 0 
+                gain += 1
             i += 1
         col = [x for x in col if x != 0]
         while len(col) < 4:
@@ -293,7 +302,7 @@ def move_down(grid):
         for r in range(4):
             new_grid[3 - r][c] = col[r]
 
-    return new_grid
+    return new_grid , gain
 
 #เช็กว่าเกมจบรึยัง เตย
 def is_game_over(grid):
@@ -348,6 +357,8 @@ def show_game_over(score):
 
 #ลูปหลักของเกม ฟลุค ธี เตย
 def main():
+    global score_p1, score_p2   
+    score_p1, score_p2 = 0, 0   
     game_state = "menu"
     grid1, grid2 = new_grid(), new_grid()
     start_time = 0
@@ -362,10 +373,13 @@ def main():
                 if e.type == pygame.MOUSEBUTTONDOWN:
                     if player1_rect.collidepoint(e.pos):
                         grid1 = reset_game()
-                        game_state = "play1"
+                        score_p1 = 0  
+                        game_state = "play1" 
                     elif player2_rect.collidepoint(e.pos):
                         grid1 = reset_game()
                         grid2 = reset_game()
+                        score_p1 = 0  
+                        score_p2 = 0
                         game_state = "play2"
                     elif how_rect.collidepoint(e.pos):
                         print("WASD / ลูกศร เพื่อเลื่อนช่องเลข")
@@ -377,42 +391,46 @@ def main():
 
                     if game_state == "play1":
                         before = [r[:] for r in grid1]
-                        if e.key in (pygame.K_LEFT, pygame.K_a): grid1 = move_left(grid1)
-                        elif e.key in (pygame.K_RIGHT, pygame.K_d): grid1 = move_right(grid1)
-                        elif e.key in (pygame.K_UP, pygame.K_w): grid1 = move_up(grid1)
-                        elif e.key in (pygame.K_DOWN, pygame.K_s): grid1 = move_down(grid1)
-                        
+                        gain = 0
+                        if e.key in (pygame.K_LEFT, pygame.K_a): grid1, gain = move_left(grid1)
+                        elif e.key in (pygame.K_RIGHT, pygame.K_d): grid1, gain = move_right(grid1)
+                        elif e.key in (pygame.K_UP, pygame.K_w): grid1, gain = move_up(grid1)
+                        elif e.key in (pygame.K_DOWN, pygame.K_s): grid1, gain = move_down(grid1)
+
+                        score_p1 += gain 
+
                         if grid1 != before:
                             add_random_tile(grid1)
-
-                            #ตรวจสอบว่าเกมจบหรือยัง เตย
                             if is_game_over(grid1):
-                                score = get_score(grid1)
-                                result = show_game_over(score)
+                                result = show_game_over(score_p1)
                                 if result == "play_again":
                                     grid1 = reset_game()
-                                    start_time = pygame.time.get_ticks()
+                                    score_p1 = 0
                                 elif result == "menu":
                                     game_state = "menu"
 
                     elif game_state == "play2":
-                        before1 = [r[:] for r in grid1]
-                        before2 = [r[:] for r in grid2]
+                        before1, before2 = [r[:] for r in grid1], [r[:] for r in grid2]
+                        gain1 = gain2 = 0
 
-                        #Player 1 (WASD)
-                        if e.key == pygame.K_a: grid1 = move_left(grid1)
-                        elif e.key == pygame.K_d: grid1 = move_right(grid1)
-                        elif e.key == pygame.K_w: grid1 = move_up(grid1)
-                        elif e.key == pygame.K_s: grid1 = move_down(grid1)
+                        # Player 1
+                        if e.key == pygame.K_a: grid1, gain1 = move_left(grid1)
+                        elif e.key == pygame.K_d: grid1, gain1 = move_right(grid1)
+                        elif e.key == pygame.K_w: grid1, gain1 = move_up(grid1)
+                        elif e.key == pygame.K_s: grid1, gain1 = move_down(grid1)
 
-                        #Player 2 (Arrow keys)
-                        if e.key == pygame.K_LEFT: grid2 = move_left(grid2)
-                        elif e.key == pygame.K_RIGHT: grid2 = move_right(grid2)
-                        elif e.key == pygame.K_UP: grid2 = move_up(grid2)
-                        elif e.key == pygame.K_DOWN: grid2 = move_down(grid2)
+                        # Player 2
+                        if e.key == pygame.K_LEFT: grid2, gain2 = move_left(grid2)
+                        elif e.key == pygame.K_RIGHT: grid2, gain2 = move_right(grid2)
+                        elif e.key == pygame.K_UP: grid2, gain2 = move_up(grid2)
+                        elif e.key == pygame.K_DOWN: grid2, gain2 = move_down(grid2)
+
+                        score_p1 += gain1
+                        score_p2 += gain2
 
                         if grid1 != before1: add_random_tile(grid1)
                         if grid2 != before2: add_random_tile(grid2)
+
 
         #วาดหน้าจอ
         if game_state == "menu":
