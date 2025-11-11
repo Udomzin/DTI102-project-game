@@ -48,7 +48,7 @@ font_btn = pygame.font.Font(None, 50)
 font_num = pygame.font.Font(None, 60)
 clock = pygame.time.Clock()
 
-# 3 ปุ่ม
+#3 ปุ่ม
 def copy_grid(g):
     return [row[:] for row in g]
 
@@ -64,11 +64,11 @@ def delete_one_tile(grid):
         r, c = random.choice(cells)
         grid[r][c] = 0
 
-# เก็บ rect ของปุ่มใต้บอร์ดแต่ละผู้เล่น
+#เก็บ rect ของปุ่มใต้บอร์ดแต่ละผู้เล่น
 BUTTONS_P1 = {"undo": None, "swap": None, "delete": None}
 BUTTONS_P2 = {"undo": None, "swap": None, "delete": None}
 
-# ประวัติของแต่ละผู้เล่น (ไว้สำหรับ Undo)
+#ประวัติของแต่ละผู้เล่น (ไว้สำหรับ Undo)
 HIST1 = []
 HIST2 = []
 
@@ -163,16 +163,18 @@ def draw_board(grid, start_x, start_y, label):
                 text = font_num.render(str(value), True, text_color)
                 screen.blit(text, text.get_rect(center=rect.center))
 
-# วาดเกมเช็คสองผู้เล่น ฟลุค , แตงแก้ 
+#วาดเกมเช็คสองผู้เล่น ฟลุค , แตงแก้ 
 def draw_game(grid1, grid2=None):
     screen.blit(background, (0, 0))
     size, gap = 120, 15
+    
     #อันนี้player 1 
     if grid2 is None:
         p1_x = WIDTH//2 - 240
         p1_y = HEIGHT//2 - 240
         draw_board(grid1, p1_x, p1_y, "P1")
         draw_buttons(p1_x, p1_y, size, gap, for_player="p1")
+        
     #อันนี้player 2
     else:
         p1_x = WIDTH//2 - 600
@@ -195,11 +197,11 @@ def draw_menu():
     else:
         screen.fill(BG_COLOR)
 
-    # หัวข้อใหญ่
+    #หัวข้อใหญ่
     title = font_title.render("2048", True, WHITE)
     screen.blit(title, title.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 180)))
 
-    # วาดปุ่ม 3 ปุ่ม
+    #วาดปุ่ม 3 ปุ่ม
     pygame.draw.rect(screen, PLAYER1, player1_rect, border_radius=12)
     pygame.draw.rect(screen, PLAYER2, player2_rect, border_radius=12)
     pygame.draw.rect(screen, ORANGE,   how_rect,   border_radius=12)
@@ -348,6 +350,8 @@ def show_game_over(score):
 def main():
     game_state = "menu"
     grid1, grid2 = new_grid(), new_grid()
+    start_time = 0
+    time_over = 60
 
     while True:
         for e in pygame.event.get():
@@ -387,6 +391,7 @@ def main():
                                 result = show_game_over(score)
                                 if result == "play_again":
                                     grid1 = reset_game()
+                                    start_time = pygame.time.get_ticks()
                                 elif result == "menu":
                                     game_state = "menu"
 
@@ -394,13 +399,13 @@ def main():
                         before1 = [r[:] for r in grid1]
                         before2 = [r[:] for r in grid2]
 
-                        # Player 1 (WASD)
+                        #Player 1 (WASD)
                         if e.key == pygame.K_a: grid1 = move_left(grid1)
                         elif e.key == pygame.K_d: grid1 = move_right(grid1)
                         elif e.key == pygame.K_w: grid1 = move_up(grid1)
                         elif e.key == pygame.K_s: grid1 = move_down(grid1)
 
-                        # Player 2 (Arrow keys)
+                        #Player 2 (Arrow keys)
                         if e.key == pygame.K_LEFT: grid2 = move_left(grid2)
                         elif e.key == pygame.K_RIGHT: grid2 = move_right(grid2)
                         elif e.key == pygame.K_UP: grid2 = move_up(grid2)
@@ -409,7 +414,7 @@ def main():
                         if grid1 != before1: add_random_tile(grid1)
                         if grid2 != before2: add_random_tile(grid2)
 
-        # วาดหน้าจอ
+        #วาดหน้าจอ
         if game_state == "menu":
             draw_menu()
         elif game_state == "play1":
@@ -417,6 +422,30 @@ def main():
         elif game_state == "play2":
             draw_game(grid1, grid2)
 
+        #ตัวจับเวลา
+        if game_state in ("play1", "play2"):
+            time = (pygame.time.get_ticks() - start_time) / 1000
+            remaining = max(0, int(time_over - time)) 
+            # time_over เวลาทั้งหมดลบด้วย time ที่ผ่านไปแล้วเพื่อหาเวลาที่ยังเหลืออยู่
+
+            #วาดเวลา
+            timer_text = font_btn.render(f"Time: {remaining}", True, WHITE)
+            timer_rect = timer_text.get_rect(center=(WIDTH // 2, 40))
+            screen.blit(timer_text, timer_rect)
+            pygame.display.flip()
+
+            #ถ้าหมดเวลา
+            if remaining <= 0:
+                score = get_score(grid1)
+                result = show_game_over(score)
+                if result == "play_again":
+                    grid1 = reset_game()
+                    start_time = pygame.time.get_ticks()
+                    if game_state == "play2":
+                        grid2 = reset_game()
+                    elif result == "menu":
+                        game_state = "menu"
+        
         clock.tick(60)
 
 if __name__ == "__main__":
