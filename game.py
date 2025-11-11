@@ -39,7 +39,7 @@ PLAYER1 = (120, 80, 200)
 PLAYER2 = (200, 80, 80)
 ORANGE = (240, 100, 40)
 BG_COLOR = (66, 1, 105)
-TILE_COLOR = (205, 193, 180)
+TILE_COLOR = (252, 220, 133)
 TEXT_COLOR = (50, 50, 50)
 
 #ฟอนต์หัวข้อใหญ่ แตง
@@ -199,7 +199,7 @@ def draw_menu():
         screen.fill(BG_COLOR)
 
     #หัวข้อใหญ่
-    title = font_title.render("2048", True, WHITE)
+    title = font_title.render("2048", True, TILE_COLOR)
     screen.blit(title, title.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 180)))
 
     #วาดปุ่ม 3 ปุ่ม
@@ -461,8 +461,8 @@ def main():
                     start_time = pygame.time.get_ticks()
                     if game_state == "play2":
                         grid2 = reset_game()
-                    elif result == "menu":
-                        game_state = "menu"
+                elif result == "menu":
+                      game_state = "menu"
         
         clock.tick(60)
 
