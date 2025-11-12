@@ -16,6 +16,9 @@ background_path = os.path.join(current_dir, "background.png")
 background = pygame.image.load(background_path)
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
+how_path = os.path.join(current_dir, "howtoplay.png")
+how = pygame.image.load(how_path)
+
 #กำหนดสีช่อง เตย
 COLOR_SET = {
     0: (180, 160, 140),
@@ -191,7 +194,10 @@ def draw_game(grid1, grid2=None):
 
     pygame.display.flip()
 
-
+def how_to_play():
+    screen.blit(how, (0, 0))
+    pygame.display.flip()
+    
 def draw_menu():
     if background:
         screen.blit(background, (0, 0))
@@ -382,9 +388,9 @@ def main():
                         score_p2 = 0
                         game_state = "play2"
                     elif how_rect.collidepoint(e.pos):
-                        print("WASD / ลูกศร เพื่อเลื่อนช่องเลข")
+                        game_state = "howtoplay"
 
-            elif game_state in ("play1", "play2"):
+            elif game_state in ("play1", "play2","howtoplay"):
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_ESCAPE:
                         game_state = "menu"
@@ -439,6 +445,8 @@ def main():
             draw_game(grid1)
         elif game_state == "play2":
             draw_game(grid1, grid2)
+        elif game_state == "howtoplay":
+            how_to_play()
 
         #ตัวจับเวลา
         if game_state in ("play1", "play2"):
