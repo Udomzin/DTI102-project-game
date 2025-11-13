@@ -448,13 +448,14 @@ def main():
         elif game_state == "howtoplay":
             how_to_play()
 
-        #ตัวจับเวลา
+        #จับเวลา
         if game_state in ("play1", "play2"):
+            #AI
             time = (pygame.time.get_ticks() - start_time) / 1000
             remaining = max(0, int(time_over - time)) 
             # time_over เวลาทั้งหมดลบด้วย time ที่ผ่านไปแล้วเพื่อหาเวลาที่ยังเหลืออยู่
 
-            #วาดเวลา
+            #วาดtextเวลา
             timer_text = font_btn.render(f"Time: {remaining}", True, WHITE)
             timer_rect = timer_text.get_rect(center=(WIDTH // 2, 40))
             screen.blit(timer_text, timer_rect)
@@ -472,7 +473,7 @@ def main():
                 elif result == "menu":
                       game_state = "menu"
         
-        clock.tick(60)
+        clock.tick(10)
 
 if __name__ == "__main__":
     main()
