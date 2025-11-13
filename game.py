@@ -375,8 +375,7 @@ def main():
                     elif how_rect.collidepoint(e.pos):
                         game_state = "howtoplay"
 
-                        elif game_state in ("play1", "play2", "howtoplay"):
-
+            elif game_state in ("play1", "play2", "howtoplay"):
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_ESCAPE:
                         game_state = "menu"
