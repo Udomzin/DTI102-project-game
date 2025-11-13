@@ -41,6 +41,47 @@ BG_COLOR = (66, 1, 105)
 TILE_COLOR = (205, 193, 180)
 TEXT_COLOR = (50, 50, 50)
 
+#ฟังชั่น 3 ปุ่ม แตง (แก้)
+def copy_grid(g):
+    new_grid = []
+    for row in g:
+        new_row = row[:]  
+        new_grid.append(new_row)
+    return new_grid
+def swap_two_tiles(grid):
+    cells = []
+    for r in range(4):
+        for c in range(4):
+            if grid[r][c] != 0:
+                cells.append((r, c))
+
+    if len(cells) >= 2:
+        pos1 = random.choice(cells)
+        pos2 = random.choice(cells)
+
+
+        while pos2 == pos1:
+            pos2 = random.choice(cells)
+
+        r1, c1 = pos1
+        r2, c2 = pos2
+        
+        temp = grid[r1][c1]
+        grid[r1][c1] = grid[r2][c2]
+        grid[r2][c2] = temp
+        
+def delete_one_tile(grid):
+    cells = []
+    for r in range(4):
+        for c in range(4):
+            if grid[r][c] != 0:
+                cells.append((r, c))
+
+    if len(cells) > 0:
+        r, c = random.choice(cells)
+        grid[r][c] = 0
+
+
 #ฟอนต์หัวข้อใหญ่ แตง
 font_title = pygame.font.Font(None, 180)
 font_btn = pygame.font.Font(None, 50)
