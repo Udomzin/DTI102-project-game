@@ -318,9 +318,6 @@ def is_game_over(grid):
                 return False
     return True
 
-#ดูคะแนนตอนเกมจบ เตย
-def get_score(grid): 
-    return sum(sum(r) for r in grid)
 
 #หน้าจบเกม เตย
 def show_game_over(score):
@@ -463,7 +460,7 @@ def main():
 
             #ถ้าหมดเวลา
             if remaining <= 0:
-                score = get_score(grid1)
+                score = gain(grid1)
                 result = show_game_over(score)
                 if result == "play_again":
                     grid1 = reset_game()
