@@ -45,7 +45,7 @@ BG_COLOR = (66, 1, 105)
 TILE_COLOR = (252, 220, 133)
 TEXT_COLOR = (50, 50, 50)
 
-#ฟอนต์หัวข้อใหญ่ 
+#ฟอนต์หัวข้อใหญ่ แตง
 font_title = pygame.font.Font(None, 180)
 font_btn = pygame.font.Font(None, 50)
 font_num = pygame.font.Font(None, 60)
