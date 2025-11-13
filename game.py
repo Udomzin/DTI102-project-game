@@ -38,8 +38,14 @@ PLAYER1 = (120, 80, 200)
 PLAYER2 = (200, 80, 80)
 ORANGE = (240, 100, 40)
 BG_COLOR = (66, 1, 105)
-TILE_COLOR = (205, 193, 180)
+TILE_COLOR = (252, 220, 133)
 TEXT_COLOR = (50, 50, 50)
+
+#ฟอนต์หัวข้อใหญ่ แตง
+font_title = pygame.font.Font(None, 180)
+font_btn = pygame.font.Font(None, 50)
+font_num = pygame.font.Font(None, 60)
+clock = pygame.time.Clock()
 
 #ฟังชั่น 3 ปุ่ม แตง (แก้)
 def copy_grid(g):
@@ -48,6 +54,7 @@ def copy_grid(g):
         new_row = row[:]  
         new_grid.append(new_row)
     return new_grid
+
 def swap_two_tiles(grid):
     cells = []
     for r in range(4):
@@ -69,7 +76,9 @@ def swap_two_tiles(grid):
         temp = grid[r1][c1]
         grid[r1][c1] = grid[r2][c2]
         grid[r2][c2] = temp
-        
+
+
+
 def delete_one_tile(grid):
     cells = []
     for r in range(4):
@@ -82,11 +91,13 @@ def delete_one_tile(grid):
         grid[r][c] = 0
 
 
-#ฟอนต์หัวข้อใหญ่ แตง
-font_title = pygame.font.Font(None, 180)
-font_btn = pygame.font.Font(None, 50)
-font_num = pygame.font.Font(None, 60)
-clock = pygame.time.Clock()
+#เก็บ rect ของปุ่มใต้บอร์ดแต่ละผู้เล่น
+BUTTONS_P1 = {"undo": None, "swap": None, "delete": None}
+BUTTONS_P2 = {"undo": None, "swap": None, "delete": None}
+
+#ประวัติของแต่ละผู้เล่น (ไว้สำหรับ Undo) แตง
+HIST1 = []
+HIST2 = []
 
 #ปุ่มเมนูสี่เหลี่ยม player one , player two , how to play แตง
 player1_rect = pygame.Rect(0, 0, 260, 70)
@@ -98,6 +109,8 @@ space = 90
 player1_rect.center = (center_x, start_y)
 player2_rect.center = (center_x, start_y + space)
 how_rect.center = (center_x, start_y + space * 2)
+score_p1, score_p2 = 0, 0 
+
 
 #ตารางเกม ฟลุค
 def new_grid():
