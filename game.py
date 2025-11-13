@@ -59,50 +59,6 @@ def copy_grid(g):
         new_grid.append(new_row)
     return new_grid
 
-def swap_two_tiles(grid):
-    cells = []
-    for r in range(4):
-        for c in range(4):
-            if grid[r][c] != 0:
-                cells.append((r, c))
-
-    if len(cells) >= 2:
-        pos1 = random.choice(cells)
-        pos2 = random.choice(cells)
-
-
-        while pos2 == pos1:
-            pos2 = random.choice(cells)
-
-        r1, c1 = pos1
-        r2, c2 = pos2
-        
-        temp = grid[r1][c1]
-        grid[r1][c1] = grid[r2][c2]
-        grid[r2][c2] = temp
-
-
-
-def delete_one_tile(grid):
-    cells = []
-    for r in range(4):
-        for c in range(4):
-            if grid[r][c] != 0:
-                cells.append((r, c))
-
-    if len(cells) > 0:
-        r, c = random.choice(cells)
-        grid[r][c] = 0
-
-
-#เก็บ rect ของปุ่มใต้บอร์ดแต่ละผู้เล่น
-BUTTONS_P1 = {"undo": None, "swap": None, "delete": None}
-BUTTONS_P2 = {"undo": None, "swap": None, "delete": None}
-
-#ประวัติของแต่ละผู้เล่น (ไว้สำหรับ Undo) แตง
-HIST1 = []
-HIST2 = []
-
 #ปุ่มเมนูสี่เหลี่ยม player one , player two , how to play แตง
 player1_rect = pygame.Rect(0, 0, 260, 70)
 player2_rect = pygame.Rect(0, 0, 260, 70)
