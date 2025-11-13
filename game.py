@@ -51,14 +51,6 @@ font_btn = pygame.font.Font(None, 50)
 font_num = pygame.font.Font(None, 60)
 clock = pygame.time.Clock()
 
-#ฟังชั่น 3 ปุ่ม แตง (แก้)
-def copy_grid(g):
-    new_grid = []
-    for row in g:
-        new_row = row[:]  
-        new_grid.append(new_row)
-    return new_grid
-
 #ปุ่มเมนูสี่เหลี่ยม player one , player two , how to play แตง
 player1_rect = pygame.Rect(0, 0, 260, 70)
 player2_rect = pygame.Rect(0, 0, 260, 70)
