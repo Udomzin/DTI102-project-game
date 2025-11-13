@@ -89,6 +89,10 @@ def reset_game():
     return g
 
 #สร้าง draw ปุ่ม แตง
+
+BUTTONS_P1 = {"undo": None, "swap": None, "delete": None}
+BUTTONS_P2 = {"undo": None, "swap": None, "delete": None}
+
 Button_W = 160
 Button_H = 60
 Button_SPACE = 20
@@ -418,7 +422,23 @@ def main():
                         if grid1 != before1: add_random_tile(grid1)
                         if grid2 != before2: add_random_tile(grid2)
 
-
+                        #คลิกปุ่ม 3 ปุ่มได้ แตง 
+            
+                elif e.type == pygame.MOUSEBUTTONDOWN and game_state in ("play1", "play2"):
+                    mx, my = e.pos
+                        if BUTTONS_P1["undo"] and BUTTONS_P1["undo"].collidepoint(mx, my):
+                            print("P1: Clicked Undo")
+                        elif BUTTONS_P1["swap"] and BUTTONS_P1["swap"].collidepoint(mx, my):
+                            print("P1: Clicked Swap")
+                        elif BUTTONS_P1["delete"] and BUTTONS_P1["delete"].collidepoint(mx, my):
+                            print("P1: Clicked Delete")
+                        if game_state == "play2":
+                            if BUTTONS_P2["undo"] and BUTTONS_P2["undo"].collidepoint(mx, my):
+                                print("P2: Clicked Undo")
+                            elif BUTTONS_P2["swap"] and BUTTONS_P2["swap"].collidepoint(mx, my):
+                                print("P2: Clicked Swap")
+                            elif BUTTONS_P2["delete"] and BUTTONS_P2["delete"].collidepoint(mx, my):
+                                print("P2: Clicked Delete")
         #วาดหน้าจอ
         if game_state == "menu":
             draw_menu()
