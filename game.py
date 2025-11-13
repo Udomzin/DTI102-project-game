@@ -375,7 +375,8 @@ def main():
                     elif how_rect.collidepoint(e.pos):
                         game_state = "howtoplay"
 
-            elif game_state in ("play1", "play2","howtoplay"):
+                        elif game_state in ("play1", "play2", "howtoplay"):
+
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_ESCAPE:
                         game_state = "menu"
@@ -383,10 +384,14 @@ def main():
                     if game_state == "play1":
                         before = [r[:] for r in grid1]
                         gain = 0
-                        if e.key in (pygame.K_LEFT, pygame.K_a): grid1, gain = move_left(grid1)
-                        elif e.key in (pygame.K_RIGHT, pygame.K_d): grid1, gain = move_right(grid1)
-                        elif e.key in (pygame.K_UP, pygame.K_w): grid1, gain = move_up(grid1)
-                        elif e.key in (pygame.K_DOWN, pygame.K_s): grid1, gain = move_down(grid1)
+                        if e.key in (pygame.K_LEFT, pygame.K_a):
+                            grid1, gain = move_left(grid1)
+                        elif e.key in (pygame.K_RIGHT, pygame.K_d):
+                            grid1, gain = move_right(grid1)
+                        elif e.key in (pygame.K_UP, pygame.K_w):
+                            grid1, gain = move_up(grid1)
+                        elif e.key in (pygame.K_DOWN, pygame.K_s):
+                            grid1, gain = move_down(grid1)
 
                         score_p1 += gain 
 
@@ -404,41 +409,55 @@ def main():
                         before1, before2 = [r[:] for r in grid1], [r[:] for r in grid2]
                         gain1 = gain2 = 0
 
-                        # Player 1
-                        if e.key == pygame.K_a: grid1, gain1 = move_left(grid1)
-                        elif e.key == pygame.K_d: grid1, gain1 = move_right(grid1)
-                        elif e.key == pygame.K_w: grid1, gain1 = move_up(grid1)
-                        elif e.key == pygame.K_s: grid1, gain1 = move_down(grid1)
+                        # Player 1 
+                        if e.key == pygame.K_a:
+                            grid1, gain1 = move_left(grid1)
+                        elif e.key == pygame.K_d:
+                            grid1, gain1 = move_right(grid1)
+                        elif e.key == pygame.K_w:
+                            grid1, gain1 = move_up(grid1)
+                        elif e.key == pygame.K_s:
+                            grid1, gain1 = move_down(grid1)
 
-                        # Player 2
-                        if e.key == pygame.K_LEFT: grid2, gain2 = move_left(grid2)
-                        elif e.key == pygame.K_RIGHT: grid2, gain2 = move_right(grid2)
-                        elif e.key == pygame.K_UP: grid2, gain2 = move_up(grid2)
-                        elif e.key == pygame.K_DOWN: grid2, gain2 = move_down(grid2)
+                        # Player 2 
+                        if e.key == pygame.K_LEFT:
+                            grid2, gain2 = move_left(grid2)
+                        elif e.key == pygame.K_RIGHT:
+                            grid2, gain2 = move_right(grid2)
+                        elif e.key == pygame.K_UP:
+                            grid2, gain2 = move_up(grid2)
+                        elif e.key == pygame.K_DOWN:
+                            grid2, gain2 = move_down(grid2)
 
                         score_p1 += gain1
                         score_p2 += gain2
 
-                        if grid1 != before1: add_random_tile(grid1)
-                        if grid2 != before2: add_random_tile(grid2)
+                        if grid1 != before1:
+                            add_random_tile(grid1)
+                        if grid2 != before2:
+                            add_random_tile(grid2)
 
-                        #คลิกปุ่ม 3 ปุ่มได้ แตง 
-            
+                # คลิกปุ่ม แตง
                 elif e.type == pygame.MOUSEBUTTONDOWN and game_state in ("play1", "play2"):
                     mx, my = e.pos
-                        if BUTTONS_P1["undo"] and BUTTONS_P1["undo"].collidepoint(mx, my):
-                            print("P1: Clicked Undo")
-                        elif BUTTONS_P1["swap"] and BUTTONS_P1["swap"].collidepoint(mx, my):
-                            print("P1: Clicked Swap")
-                        elif BUTTONS_P1["delete"] and BUTTONS_P1["delete"].collidepoint(mx, my):
-                            print("P1: Clicked Delete")
-                        if game_state == "play2":
-                            if BUTTONS_P2["undo"] and BUTTONS_P2["undo"].collidepoint(mx, my):
-                                print("P2: Clicked Undo")
-                            elif BUTTONS_P2["swap"] and BUTTONS_P2["swap"].collidepoint(mx, my):
-                                print("P2: Clicked Swap")
-                            elif BUTTONS_P2["delete"] and BUTTONS_P2["delete"].collidepoint(mx, my):
-                                print("P2: Clicked Delete")
+
+                    
+                    if BUTTONS_P1["undo"] and BUTTONS_P1["undo"].collidepoint(mx, my):
+                        print("P1: Clicked Undo")
+                    elif BUTTONS_P1["swap"] and BUTTONS_P1["swap"].collidepoint(mx, my):
+                        print("P1: Clicked Swap")
+                    elif BUTTONS_P1["delete"] and BUTTONS_P1["delete"].collidepoint(mx, my):
+                        print("P1: Clicked Delete")
+
+                    
+                    if game_state == "play2":
+                        if BUTTONS_P2["undo"] and BUTTONS_P2["undo"].collidepoint(mx, my):
+                            print("P2: Clicked Undo")
+                        elif BUTTONS_P2["swap"] and BUTTONS_P2["swap"].collidepoint(mx, my):
+                            print("P2: Clicked Swap")
+                        elif BUTTONS_P2["delete"] and BUTTONS_P2["delete"].collidepoint(mx, my):
+                            print("P2: Clicked Delete")
+
         #วาดหน้าจอ
         if game_state == "menu":
             draw_menu()
