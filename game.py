@@ -51,27 +51,55 @@ font_btn = pygame.font.Font(None, 50)
 font_num = pygame.font.Font(None, 60)
 clock = pygame.time.Clock()
 
-#3 ปุ่ม
+#ฟังชั่น 3 ปุ่ม แตง (แก้)
 def copy_grid(g):
-    return [row[:] for row in g]
+    new_grid = []
+    for row in g:
+        new_row = row[:]  
+        new_grid.append(new_row)
+    return new_grid
 
 def swap_two_tiles(grid):
-    cells = [(r, c) for r in range(4) for c in range(4) if grid[r][c] != 0]
+    cells = []
+    for r in range(4):
+        for c in range(4):
+            if grid[r][c] != 0:
+                cells.append((r, c))
+
     if len(cells) >= 2:
-        (r1, c1), (r2, c2) = random.sample(cells, 2)
-        grid[r1][c1], grid[r2][c2] = grid[r2][c2], grid[r1][c1]
+        pos1 = random.choice(cells)
+        pos2 = random.choice(cells)
+
+
+        while pos2 == pos1:
+            pos2 = random.choice(cells)
+
+        r1, c1 = pos1
+        r2, c2 = pos2
+        
+        temp = grid[r1][c1]
+        grid[r1][c1] = grid[r2][c2]
+        grid[r2][c2] = temp
+
+
 
 def delete_one_tile(grid):
-    cells = [(r, c) for r in range(4) for c in range(4) if grid[r][c] != 0]
-    if cells:
+    cells = []
+    for r in range(4):
+        for c in range(4):
+            if grid[r][c] != 0:
+                cells.append((r, c))
+
+    if len(cells) > 0:
         r, c = random.choice(cells)
         grid[r][c] = 0
+
 
 #เก็บ rect ของปุ่มใต้บอร์ดแต่ละผู้เล่น
 BUTTONS_P1 = {"undo": None, "swap": None, "delete": None}
 BUTTONS_P2 = {"undo": None, "swap": None, "delete": None}
 
-#ประวัติของแต่ละผู้เล่น (ไว้สำหรับ Undo)
+#ประวัติของแต่ละผู้เล่น (ไว้สำหรับ Undo) แตง
 HIST1 = []
 HIST2 = []
 
@@ -104,7 +132,7 @@ def reset_game():
     add_random_tile(g)
     return g
 
-#สร้าง draw ปุ่ม 
+#สร้าง draw ปุ่ม แตง
 Button_W = 160
 Button_H = 60
 Button_SPACE = 20
@@ -208,7 +236,7 @@ def draw_menu():
     title = font_title.render("2048", True, TILE_COLOR)
     screen.blit(title, title.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 180)))
 
-    #วาดปุ่ม 3 ปุ่ม
+    #วาดปุ่ม 3 ปุ่ม แตง 
     pygame.draw.rect(screen, PLAYER1, player1_rect, border_radius=12)
     pygame.draw.rect(screen, PLAYER2, player2_rect, border_radius=12)
     pygame.draw.rect(screen, ORANGE,   how_rect,   border_radius=12)
