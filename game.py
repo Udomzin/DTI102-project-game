@@ -137,6 +137,22 @@ def draw_buttons(start_x, start_y, size, gap, for_player="p1"):
     target["swap"]   = swap_rect
     target["delete"] = delete_rect
 
+def swap_grid(grid): #สลับทุกตัวในตาราง *ฟลุค
+    nums = [grid[r][c] for r in range(4) for c in range(4)]
+
+    random.shuffle(nums)
+
+    idx = 0
+    for r in range(4):
+        for c in range(4):
+            grid[r][c] = nums[idx]
+            idx += 1
+
+    return grid
+
+
+
+
 #วาดตารางเกมจัดให้อยู้ตรงกลางหน้าจอ ฟลุค
 def draw_board(grid, start_x, start_y, label):
     size, gap = 120, 15
@@ -459,7 +475,9 @@ def main():
                     if BUTTONS_P1["undo"] and BUTTONS_P1["undo"].collidepoint(mx, my):
                         BUTTON_USED_P1["undo"] = True
                     elif BUTTONS_P1["swap"] and BUTTONS_P1["swap"].collidepoint(mx, my):
-                        BUTTON_USED_P1["swap"] = True
+                        if not BUTTON_USED_P1["swap"]:      
+                            BUTTON_USED_P1["swap"] = True
+                            grid1 = swap_grid(grid1)  
                     elif BUTTONS_P1["delete"] and BUTTONS_P1["delete"].collidepoint(mx, my):
                         BUTTON_USED_P1["delete"] = True
 
@@ -469,7 +487,9 @@ def main():
                         if BUTTONS_P2["undo"] and BUTTONS_P2["undo"].collidepoint(mx, my):
                             BUTTON_USED_P2["undo"] = True
                         elif BUTTONS_P2["swap"] and BUTTONS_P2["swap"].collidepoint(mx, my):
-                            BUTTON_USED_P2["swap"] = True
+                            if not BUTTON_USED_P2["swap"]:      
+                                BUTTON_USED_P2["swap"] = True
+                                grid2 = swap_grid(grid2)  
                         elif BUTTONS_P2["delete"] and BUTTONS_P2["delete"].collidepoint(mx, my):
                             BUTTON_USED_P2["delete"] = True
 
