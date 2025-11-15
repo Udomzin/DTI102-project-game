@@ -81,7 +81,6 @@ def reset_game():
     return g
 
 #สร้าง draw ปุ่ม แตง
-
 BUTTONS_P1 = {"undo": None, "swap": None, "delete": None}
 BUTTONS_P2 = {"undo": None, "swap": None, "delete": None}
 
@@ -109,7 +108,6 @@ def draw_buttons(start_x, start_y, size, gap, for_player="p1"):
     swap_rect   = pygame.Rect(bar_x + Button_W + Button_SPACE, bar_y, Button_W, Button_H)
     delete_rect = pygame.Rect(bar_x + 2 * (Button_W + Button_SPACE), bar_y, Button_W, Button_H)
 
-
     used_state = BUTTON_USED_P1 if for_player == "p1" else BUTTON_USED_P2
 
     normal_color = (205, 193, 180)     
@@ -122,7 +120,6 @@ def draw_buttons(start_x, start_y, size, gap, for_player="p1"):
     pygame.draw.rect(screen, undo_color, undo_rect, border_radius=10)
     pygame.draw.rect(screen, swap_color, swap_rect, border_radius=10)
     pygame.draw.rect(screen, delete_color, delete_rect, border_radius=10)
-
 
     t1 = font_btn.render("Undo", True, (255, 255, 255))
     t2 = font_btn.render("Swap", True, (255, 255, 255))
@@ -149,9 +146,6 @@ def swap_grid(grid): #สลับทุกตัวในตาราง *ฟ�
             idx += 1
 
     return grid
-
-
-
 
 #วาดตารางเกมจัดให้อยู้ตรงกลางหน้าจอ ฟลุค
 def draw_board(grid, start_x, start_y, label):
@@ -257,7 +251,6 @@ def move_left(g):
         new_grid.append(row)
     return new_grid, gain
 
-
 #ขยับและรวมตัวเลขไปทางขวา ธี,ฟลุคเพิ่มคะแนน
 def move_right(grid):
     new_grid = []
@@ -268,7 +261,6 @@ def move_right(grid):
         new_grid.append(moved[0][::-1])
         gain += g
     return new_grid, gain
-
 
 #ขยับและรวมตัวเลขขึ้นข้างบน ธี,ฟลุคเพิ่มคะแนน
 def move_up(grid):
@@ -333,7 +325,6 @@ def is_game_over(grid):
             if grid[r][c] == 0 or (c < 3 and grid[r][c] == grid[r][c + 1]) or (r < 3 and grid[r][c] == grid[r + 1][c]):
                 return False
     return True
-
 
 #หน้าจบเกม เตย
 def show_game_over(score, score2=None, is_two_player=False):
@@ -530,7 +521,6 @@ def main():
                         elif BUTTONS_P2["delete"] and BUTTONS_P2["delete"].collidepoint(mx, my):
                             BUTTON_USED_P2["delete"] = True
 
-
         #วาดหน้าจอ
         if game_state == "menu":
             draw_menu()
@@ -560,16 +550,14 @@ def main():
                     result = show_game_over(score_p1, score_p2, is_two_player=True)
                 else:
                     result = show_game_over(score_p1)
-                
                 if result == "play_again":
                     grid1 = reset_game()
                     score_p1 = 0
                     start_time = pygame.time.get_ticks()
-                    
-                    if game_state == "play2":  # เช็คเฉพาะตอน play again
+                    if game_state == "play2": 
                         grid2 = reset_game()
                         score_p2 = 0
-                elif result == "menu":  # <--- ต้องเป็น elif
+                elif result == "menu":
                     game_state = "menu"
         
         clock.tick(10)
