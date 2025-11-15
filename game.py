@@ -374,6 +374,10 @@ def show_game_over(score):
                 elif menu_rect.collidepoint(e.pos):
                     return "menu"
 
+#undo ธี
+undo_p1 = None
+undo_p2 = None
+
 #ลูปหลักของเกม ฟลุค(ส่วน+คะแนน) ธี เตย
 def main():
     global score_p1, score_p2   
@@ -413,6 +417,7 @@ def main():
 
                     if game_state == "play1":
                         before = [r[:] for r in grid1]
+                        undo_p1 = [r[:] for r in grid1]
                         gain = 0
                         if e.key in (pygame.K_LEFT, pygame.K_a):
                             grid1, gain = move_left(grid1)
@@ -437,6 +442,8 @@ def main():
 
                     elif game_state == "play2":
                         before1, before2 = [r[:] for r in grid1], [r[:] for r in grid2]
+                        undo_p1 = [r[:] for r in grid1]
+                        undo_p2 = [r[:] for r in grid2]
                         gain1 = gain2 = 0
 
                         # Player 1 
@@ -473,9 +480,12 @@ def main():
 
                     
                     if BUTTONS_P1["undo"] and BUTTONS_P1["undo"].collidepoint(mx, my):
+                        if undo_p1 is not None:
+                            grid1 = [r[:] for r in undo_p1]
                         BUTTON_USED_P1["undo"] = True
                     elif BUTTONS_P1["swap"] and BUTTONS_P1["swap"].collidepoint(mx, my):
                         if not BUTTON_USED_P1["swap"]:      
+                            undo_p1 = [r[:] for r in grid1]
                             BUTTON_USED_P1["swap"] = True
                             grid1 = swap_grid(grid1)  
                     elif BUTTONS_P1["delete"] and BUTTONS_P1["delete"].collidepoint(mx, my):
@@ -485,9 +495,12 @@ def main():
                     
                     if game_state == "play2":
                         if BUTTONS_P2["undo"] and BUTTONS_P2["undo"].collidepoint(mx, my):
+                            if undo_p2 is not None:
+                                grid2 = [r[:] for r in undo_p2]
                             BUTTON_USED_P2["undo"] = True
                         elif BUTTONS_P2["swap"] and BUTTONS_P2["swap"].collidepoint(mx, my):
-                            if not BUTTON_USED_P2["swap"]:      
+                            if not BUTTON_USED_P2["swap"]:     
+                                undo_p2 = [r[:] for r in grid2]
                                 BUTTON_USED_P2["swap"] = True
                                 grid2 = swap_grid(grid2)  
                         elif BUTTONS_P2["delete"] and BUTTONS_P2["delete"].collidepoint(mx, my):
