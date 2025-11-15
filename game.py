@@ -146,7 +146,16 @@ def swap_grid(grid): #สลับทุกตัวในตาราง *ฟ�
             idx += 1
 
     return grid
+    
+#เพิ่มฟังก์ชันลบช่อง แตง
 
+def delete_tile(grid):
+    for r in range(4):
+        for c in range(4):
+            if grid[r][c] != 0:
+                grid[r][c] = 0
+                return grid
+    return grid
 #วาดตารางเกมจัดให้อยู้ตรงกลางหน้าจอ ฟลุค
 def draw_board(grid, start_x, start_y, label):
     size, gap = 120, 15
@@ -506,7 +515,8 @@ def main():
                             BUTTON_USED_P1["swap"] = True
                             grid1 = swap_grid(grid1)  
                     elif BUTTONS_P1["delete"] and BUTTONS_P1["delete"].collidepoint(mx, my):
-                        BUTTON_USED_P1["delete"] = True
+                        grid1 = delete_tile(grid1)
+
 
                     if game_state == "play2":
                         if BUTTONS_P2["undo"] and BUTTONS_P2["undo"].collidepoint(mx, my):
@@ -519,7 +529,8 @@ def main():
                                 BUTTON_USED_P2["swap"] = True
                                 grid2 = swap_grid(grid2)  
                         elif BUTTONS_P2["delete"] and BUTTONS_P2["delete"].collidepoint(mx, my):
-                            BUTTON_USED_P2["delete"] = True
+                            grid2 = delete_tile(grid2)
+
 
         #วาดหน้าจอ
         if game_state == "menu":
