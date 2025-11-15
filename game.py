@@ -501,7 +501,7 @@ def main():
                             elif result == "menu":
                                 game_state = "menu"
 
-                # คลิกปุ่ม แตง
+                # คลิกปุ่ม แตง , ฟลุค
                 elif e.type == pygame.MOUSEBUTTONDOWN and game_state in ("play1", "play2"):
                     mx, my = e.pos
 
@@ -515,7 +515,10 @@ def main():
                             BUTTON_USED_P1["swap"] = True
                             grid1 = swap_grid(grid1)  
                     elif BUTTONS_P1["delete"] and BUTTONS_P1["delete"].collidepoint(mx, my):
-                        grid1 = delete_tile(grid1)
+                        if not BUTTON_USED_P1["delete"]:      
+                            BUTTON_USED_P1["delete"] = True   
+                            grid1 = delete_tile(grid1)      
+
 
 
                     if game_state == "play2":
@@ -529,7 +532,10 @@ def main():
                                 BUTTON_USED_P2["swap"] = True
                                 grid2 = swap_grid(grid2)  
                         elif BUTTONS_P2["delete"] and BUTTONS_P2["delete"].collidepoint(mx, my):
-                            grid2 = delete_tile(grid2)
+                            if not BUTTON_USED_P2["delete"]:      
+                                BUTTON_USED_P2["delete"] = True  
+                                grid2 = delete_tile(grid2)        
+
 
 
         #วาดหน้าจอ
