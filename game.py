@@ -431,6 +431,8 @@ def main():
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_ESCAPE:
                         game_state = "menu"
+                        undo_p1 = None
+                        undo_p2 = None
 
                     if game_state == "play1":
                         before = [r[:] for r in grid1]
