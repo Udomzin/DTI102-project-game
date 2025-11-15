@@ -499,7 +499,7 @@ def main():
 
             #ถ้าหมดเวลา
             if remaining <= 0:
-                score = = score_p1
+                score = score_p1
                 result = show_game_over(score)
 
                 if result == "play_again":
