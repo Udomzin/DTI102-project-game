@@ -88,6 +88,11 @@ BUTTONS_P2 = {"undo": None, "swap": None, "delete": None}
 BUTTON_USED_P1 = {"undo": False, "swap": False, "delete": False}
 BUTTON_USED_P2 = {"undo": False, "swap": False, "delete": False}
 
+def reset_buttons():
+    for d in (BUTTON_USED_P1, BUTTON_USED_P2):
+        for k in d:
+            d[k] = False
+
 Button_W = 160
 Button_H = 60
 Button_SPACE = 20
@@ -371,13 +376,15 @@ def main():
                 if e.type == pygame.MOUSEBUTTONDOWN:
                     if player1_rect.collidepoint(e.pos):
                         grid1 = reset_game()
-                        score_p1 = 0  
+                        score_p1 = 0
+                        reset_buttons()
                         game_state = "play1" 
                     elif player2_rect.collidepoint(e.pos):
                         grid1 = reset_game()
                         grid2 = reset_game()
                         score_p1 = 0  
                         score_p2 = 0
+                        reset_buttons()
                         game_state = "play2"
                     elif how_rect.collidepoint(e.pos):
                         game_state = "howtoplay"
@@ -493,13 +500,18 @@ def main():
             if remaining <= 0:
                 score = gain(grid1)
                 result = show_game_over(score)
-                if result == "play_again":
-                    grid1 = reset_game()
-                    start_time = pygame.time.get_ticks()
-                    if game_state == "play2":
-                        grid2 = reset_game()
-                elif result == "menu":
-                      game_state = "menu"
+
+            if result == "play_again":
+                grid1 = reset_game()
+                start_time = pygame.time.get_ticks()
+                reset_buttons()     
+
+                if game_state == "play2":
+                    grid2 = reset_game()
+
+            elif result == "menu":
+                game_state = "menu"
+
         
         clock.tick(10)
 
