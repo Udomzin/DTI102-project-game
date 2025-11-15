@@ -85,6 +85,9 @@ def reset_game():
 BUTTONS_P1 = {"undo": None, "swap": None, "delete": None}
 BUTTONS_P2 = {"undo": None, "swap": None, "delete": None}
 
+BUTTON_USED_P1 = {"undo": False, "swap": False, "delete": False}
+BUTTON_USED_P2 = {"undo": False, "swap": False, "delete": False}
+
 Button_W = 160
 Button_H = 60
 Button_SPACE = 20
@@ -101,8 +104,20 @@ def draw_buttons(start_x, start_y, size, gap, for_player="p1"):
     swap_rect   = pygame.Rect(bar_x + Button_W + Button_SPACE, bar_y, Button_W, Button_H)
     delete_rect = pygame.Rect(bar_x + 2 * (Button_W + Button_SPACE), bar_y, Button_W, Button_H)
 
-    for rect in (undo_rect, swap_rect, delete_rect):
-        pygame.draw.rect(screen, (205, 193, 180), rect, border_radius=10)
+
+    used_state = BUTTON_USED_P1 if for_player == "p1" else BUTTON_USED_P2
+
+    normal_color = (205, 193, 180)     
+    used_color   = (200, 0, 0)         
+
+    undo_color   = used_color if used_state["undo"] else normal_color
+    swap_color   = used_color if used_state["swap"] else normal_color
+    delete_color = used_color if used_state["delete"] else normal_color
+
+    pygame.draw.rect(screen, undo_color, undo_rect, border_radius=10)
+    pygame.draw.rect(screen, swap_color, swap_rect, border_radius=10)
+    pygame.draw.rect(screen, delete_color, delete_rect, border_radius=10)
+
 
     t1 = font_btn.render("Undo", True, (255, 255, 255))
     t2 = font_btn.render("Swap", True, (255, 255, 255))
@@ -434,20 +449,22 @@ def main():
 
                     
                     if BUTTONS_P1["undo"] and BUTTONS_P1["undo"].collidepoint(mx, my):
-                        print("P1: Clicked Undo")
+                        BUTTON_USED_P1["undo"] = True
                     elif BUTTONS_P1["swap"] and BUTTONS_P1["swap"].collidepoint(mx, my):
-                        print("P1: Clicked Swap")
+                        BUTTON_USED_P1["swap"] = True
                     elif BUTTONS_P1["delete"] and BUTTONS_P1["delete"].collidepoint(mx, my):
-                        print("P1: Clicked Delete")
+                        BUTTON_USED_P1["delete"] = True
+
 
                     
                     if game_state == "play2":
                         if BUTTONS_P2["undo"] and BUTTONS_P2["undo"].collidepoint(mx, my):
-                            print("P2: Clicked Undo")
+                            BUTTON_USED_P2["undo"] = True
                         elif BUTTONS_P2["swap"] and BUTTONS_P2["swap"].collidepoint(mx, my):
-                            print("P2: Clicked Swap")
+                            BUTTON_USED_P2["swap"] = True
                         elif BUTTONS_P2["delete"] and BUTTONS_P2["delete"].collidepoint(mx, my):
-                            print("P2: Clicked Delete")
+                            BUTTON_USED_P2["delete"] = True
+
 
         #วาดหน้าจอ
         if game_state == "menu":
