@@ -385,6 +385,7 @@ def main():
                         score_p1 = 0  
                         score_p2 = 0
                         reset_buttons()
+                        start_time = pygame.time.get_ticks()
                         game_state = "play2"
                     elif how_rect.collidepoint(e.pos):
                         game_state = "howtoplay"
@@ -484,7 +485,7 @@ def main():
             how_to_play()
 
         #จับเวลา
-        if game_state in ("play1", "play2"):
+        if game_state in ("play2"):
             #AI
             time = (pygame.time.get_ticks() - start_time) / 1000
             remaining = max(0, int(time_over - time)) 
@@ -498,19 +499,19 @@ def main():
 
             #ถ้าหมดเวลา
             if remaining <= 0:
-                score = gain(grid1)
+                score = = score_p1
                 result = show_game_over(score)
 
-            if result == "play_again":
-                grid1 = reset_game()
-                start_time = pygame.time.get_ticks()
-                reset_buttons()     
+                if result == "play_again":
+                    grid1 = reset_game()
+                    start_time = pygame.time.get_ticks()
+                    reset_buttons()     
 
                 if game_state == "play2":
                     grid2 = reset_game()
 
-            elif result == "menu":
-                game_state = "menu"
+                elif result == "menu":
+                    game_state = "menu"
 
         
         clock.tick(10)
