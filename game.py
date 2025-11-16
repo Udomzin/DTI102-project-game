@@ -436,7 +436,8 @@ def main():
 
                     if game_state == "play1":
                         before = [r[:] for r in grid1]
-                        undo_p1 = [r[:] for r in grid1]
+                        if not BUTTON_USED_P1["undo"]:
+                            undo_p1 = [r[:] for r in grid1]
                         gain = 0
                         if e.key in (pygame.K_LEFT, pygame.K_a):
                             grid1, gain = move_left(grid1)
@@ -506,9 +507,9 @@ def main():
                 # บังคับ ฟลุค
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_1:  # Undo
-                        if undo_p1 is not None:
+                        if not BUTTON_USED_P1["undo"] and undo_p1 is not None:
                             grid1 = [r[:] for r in undo_p1]
-                        BUTTON_USED_P1["undo"] = True
+                            BUTTON_USED_P1["undo"] = True
 
                     elif e.key == pygame.K_2:  # Swap
                         if not BUTTON_USED_P1["swap"]:
