@@ -223,7 +223,7 @@ def draw_menu():
     else:
         screen.fill(BG_COLOR)
 
-    #หัวข้อใหญ่
+    #หัวข้อใหญ่ ฟลุค
     title = font_title.render("2048", True, TILE_COLOR)
     screen.blit(title, title.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 180)))
 
@@ -503,7 +503,7 @@ def main():
                             elif result == "menu":
                                 game_state = "menu"
 
-                # บะงคะบ ฟลุค
+                # บังคับ ฟลุค
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_1:  # Undo
                         if undo_p1 is not None:
