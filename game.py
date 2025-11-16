@@ -6,10 +6,6 @@ WIDTH, HEIGHT = 1440, 824
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("2048")
 
-#โหลดภาพพื้นหลัง 
-#background = pygame.image.load("background.png")
-#background = pygame.transform.scale(background, (WIDTH, HEIGHT))  # ปรับให้พอดีหน้าจอ
-
 #โหลดภาพพื้นหลังเเละปรับขนาด
 current_dir = os.path.dirname(__file__)
 background_path = os.path.join(current_dir, "background.png")
