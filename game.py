@@ -395,7 +395,7 @@ def show_game_over(score, score2=None, is_two_player=False):
 undo_p1 = None
 undo_p2 = None
 
-#ลูปหลักของเกม ฟลุค(ส่วน+คะแนน) ธี เตย
+#ลูปหลักของเกม ฟลุค(ส่วน+คะแนน ปุ่มบังคับ) ธี เตย
 def main():
     global score_p1, score_p2, undo_p1, undo_p2  
     score_p1, score_p2 = 0, 0   
@@ -404,7 +404,7 @@ def main():
     start_time = 0
     time_over = 60
 
-    while True:
+    while True: 
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 pygame.quit(); sys.exit()
@@ -503,44 +503,44 @@ def main():
                             elif result == "menu":
                                 game_state = "menu"
 
-                # คลิกปุ่ม แตง , ฟลุค
-                elif e.type == pygame.MOUSEBUTTONDOWN and game_state in ("play1", "play2"):
-                    mx, my = e.pos
-
-                    if BUTTONS_P1["undo"] and BUTTONS_P1["undo"].collidepoint(mx, my):
+                # บะงคะบ ฟลุค
+                if e.type == pygame.KEYDOWN:
+                    if e.key == pygame.K_1:  # Undo
                         if undo_p1 is not None:
                             grid1 = [r[:] for r in undo_p1]
                         BUTTON_USED_P1["undo"] = True
-                    elif BUTTONS_P1["swap"] and BUTTONS_P1["swap"].collidepoint(mx, my):
-                        if not BUTTON_USED_P1["swap"]:      
-                            undo_p1 = [r[:] for r in grid1]
-                            BUTTON_USED_P1["swap"] = True
-                            grid1 = swap_grid(grid1)  
-                    elif BUTTONS_P1["delete"] and BUTTONS_P1["delete"].collidepoint(mx, my):
-                        if not BUTTON_USED_P1["delete"]:      
-                            BUTTON_USED_P1["delete"] = True   
-                            grid1 = delete_tile(grid1)      
 
+                    elif e.key == pygame.K_2:  # Swap
+                        if not BUTTON_USED_P1["swap"]:
+                            BUTTON_USED_P1["swap"] = True
+                            grid1 = swap_grid(grid1)
+
+                    elif e.key == pygame.K_3:  # Delete
+                        if not BUTTON_USED_P1["delete"]:
+                            BUTTON_USED_P1["delete"] = True
+                            grid1 = delete_tile(grid1)
 
 
                     if game_state == "play2":
-                        if BUTTONS_P2["undo"] and BUTTONS_P2["undo"].collidepoint(mx, my):
+                        if e.key == pygame.K_KP1:  # Undo
                             if undo_p2 is not None:
                                 grid2 = [r[:] for r in undo_p2]
                             BUTTON_USED_P2["undo"] = True
-                        elif BUTTONS_P2["swap"] and BUTTONS_P2["swap"].collidepoint(mx, my):
-                            if not BUTTON_USED_P2["swap"]:     
-                                undo_p2 = [r[:] for r in grid2]
+
+                        elif e.key == pygame.K_KP2:  # Swap
+                            if not BUTTON_USED_P2["swap"]:
                                 BUTTON_USED_P2["swap"] = True
-                                grid2 = swap_grid(grid2)  
-                        elif BUTTONS_P2["delete"] and BUTTONS_P2["delete"].collidepoint(mx, my):
-                            if not BUTTON_USED_P2["delete"]:      
-                                BUTTON_USED_P2["delete"] = True  
-                                grid2 = delete_tile(grid2)        
+                                grid2 = swap_grid(grid2)
+
+                        elif e.key == pygame.K_KP3:  # Delete
+                            if not BUTTON_USED_P2["delete"]:
+                                BUTTON_USED_P2["delete"] = True
+                                grid2 = delete_tile(grid2)
+       
 
 
 
-        #วาดหน้าจอ
+        #วาดหน้าจอ ฟลุค
         if game_state == "menu":
             draw_menu()
         elif game_state == "play1":
