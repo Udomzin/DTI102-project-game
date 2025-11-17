@@ -71,6 +71,9 @@ def add_random_tile(grid):
 
 #รีเซทตาราง ฟลุค
 def reset_game():
+    BUTTON_USED_P1["undo"] = False
+    BUTTON_USED_P1["swap"] = False
+    BUTTON_USED_P1["delete"] = False
     g = new_grid()
     add_random_tile(g)
     add_random_tile(g)
@@ -572,7 +575,7 @@ def main():
             how_to_play()
 
         #จับเวลา เตย
-        if game_state in ("play1","play2"):
+        if game_state in ("play2"):
             #AI
             time = (pygame.time.get_ticks() - start_time) / 1000
             remaining = max(0, int(time_over - time)) 
