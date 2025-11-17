@@ -388,12 +388,12 @@ def show_game_over(score, score2=None, is_two_player=False):
                     return "menu"
 
 #undo ธี
-undo_p1 = None
-undo_p2 = None
+history_p1 = None
+history_p2 = None
 
 #ลูปหลักของเกม ฟลุค(ส่วน+คะแนน ปุ่มบังคับ) ธี เตย
 def main():
-    global score_p1, score_p2, undo_p1, undo_p2  
+    global score_p1, score_p2, history_p1, history_p2  
     score_p1, score_p2 = 0, 0   
     game_state = "menu"
     grid1, grid2 = new_grid(), new_grid()
@@ -411,6 +411,8 @@ def main():
                         grid1 = reset_game()
                         score_p1 = 0
                         reset_buttons()
+                        history_p1 = None
+                        history_p2 = None
                         game_state = "play1" 
                     elif player2_rect.collidepoint(e.pos):
                         grid1 = reset_game()
@@ -418,6 +420,8 @@ def main():
                         score_p1 = 0  
                         score_p2 = 0
                         reset_buttons()
+                        history_p1 = None
+                        history_p2 = None
                         start_time = pygame.time.get_ticks()
                         game_state = "play2"
                     elif how_rect.collidepoint(e.pos):
@@ -427,67 +431,73 @@ def main():
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_ESCAPE:
                         game_state = "menu"
-                        undo_p1 = None
-                        undo_p2 = None
+                        history_p1 = None
+                        history_p2 = None
 
                     if game_state == "play1":
                         before = [r[:] for r in grid1]
-                        if not BUTTON_USED_P1["undo"]:
-                            undo_p1 = [r[:] for r in grid1]
+                        before_score = score_p1
                         gain = 0
                         if e.key in (pygame.K_LEFT, pygame.K_a):
-                            grid1, gain = move_left(grid1)
+                            newg, gain = move_left(grid1)
+                            grid1 = newg
                         elif e.key in (pygame.K_RIGHT, pygame.K_d):
-                            grid1, gain = move_right(grid1)
+                            newg, gain = move_right(grid1)
+                            grid1 = newg
                         elif e.key in (pygame.K_UP, pygame.K_w):
-                            grid1, gain = move_up(grid1)
+                            newg, gain = move_up(grid1)
+                            grid1 = newg
                         elif e.key in (pygame.K_DOWN, pygame.K_s):
-                            grid1, gain = move_down(grid1)
+                            newg, gain = move_down(grid1)
+                            grid1 = newg
 
                         score_p1 += gain 
 
                         if grid1 != before:
+                            history_p1 = {"grid": [r[:] for r in before], "score": before_score}
                             add_random_tile(grid1)
                             if is_game_over(grid1):
                                 result = show_game_over(score_p1)
                                 if result == "play_again":
                                     grid1 = reset_game()
                                     score_p1 = 0
+                                    history_p1 = None
                                 elif result == "menu":
                                     game_state = "menu"
 
                     elif game_state == "play2":
                         before1, before2 = [r[:] for r in grid1], [r[:] for r in grid2]
-                        undo_p1 = [r[:] for r in grid1]
-                        undo_p2 = [r[:] for r in grid2]
+                        before_score1, before_score2 = score_p1, score_p2
                         gain1 = gain2 = 0
 
                         # Player 1 
                         if e.key == pygame.K_a:
-                            grid1, gain1 = move_left(grid1)
+                            newg1, gain1 = move_left(grid1); grid1 = newg1
                         elif e.key == pygame.K_d:
-                            grid1, gain1 = move_right(grid1)
+                            newg1, gain1 = move_right(grid1); grid1 = newg1
                         elif e.key == pygame.K_w:
-                            grid1, gain1 = move_up(grid1)
+                            newg1, gain1 = move_up(grid1); grid1 = newg1
                         elif e.key == pygame.K_s:
-                            grid1, gain1 = move_down(grid1)
+                            newg1, gain1 = move_down(grid1); grid1 = newg1
 
                         # Player 2 
                         if e.key == pygame.K_LEFT:
-                            grid2, gain2 = move_left(grid2)
+                            newg2, gain2 = move_left(grid2); grid2 = newg2
                         elif e.key == pygame.K_RIGHT:
-                            grid2, gain2 = move_right(grid2)
+                            newg2, gain2 = move_right(grid2); grid2 = newg2
                         elif e.key == pygame.K_UP:
-                            grid2, gain2 = move_up(grid2)
+                            newg2, gain2 = move_up(grid2); grid2 = newg2
                         elif e.key == pygame.K_DOWN:
-                            grid2, gain2 = move_down(grid2)
+                            newg2, gain2 = move_down(grid2); grid2 = newg2
 
                         score_p1 += gain1
                         score_p2 += gain2
 
                         if grid1 != before1:
+                            history_p1 = {"grid": [r[:] for r in before1], "score": before_score1}
                             add_random_tile(grid1)
                         if grid2 != before2:
+                            history_p2 = {"grid": [r[:] for r in before2], "score": before_score2}
                             add_random_tile(grid2)
 
                         if is_game_over(grid1) and is_game_over(grid2):
@@ -497,41 +507,55 @@ def main():
                                 grid2 = reset_game()
                                 score_p1 = 0
                                 score_p2 = 0
+                                history_p1 = None
+                                history_p2 = None
                             elif result == "menu":
                                 game_state = "menu"
 
                 # บังคับ ฟลุค
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_1:  # Undo
-                        if not BUTTON_USED_P1["undo"] and undo_p1 is not None:
-                            grid1 = [r[:] for r in undo_p1]
+                        if not BUTTON_USED_P1["undo"] and history_p1 is not None:
+                            grid1 = [r[:] for r in history_p1["grid"]]
+                            score_p1 = history_p1["score"]
                             BUTTON_USED_P1["undo"] = True
+                            history_p1 = None
 
                     elif e.key == pygame.K_2:  # Swap
                         if not BUTTON_USED_P1["swap"]:
                             BUTTON_USED_P1["swap"] = True
+                            if history_p1 is None:
+                                history_p1 = {"grid": [r[:] for r in grid1], "score": score_p1}
                             grid1 = swap_grid(grid1)
 
                     elif e.key == pygame.K_3:  # Delete
                         if not BUTTON_USED_P1["delete"]:
                             BUTTON_USED_P1["delete"] = True
+                            if history_p1 is None:
+                                history_p1 = {"grid": [r[:] for r in grid1], "score": score_p1}
                             grid1 = delete_tile(grid1)
 
 
                     if game_state == "play2":
                         if e.key == pygame.K_KP1:  # Undo
-                            if undo_p2 is not None:
-                                grid2 = [r[:] for r in undo_p2]
-                            BUTTON_USED_P2["undo"] = True
+                            if not BUTTON_USED_P2["undo"] and history_p2 is not None:
+                                grid2 = [r[:] for r in history_p2["grid"]]
+                                score_p2 = history_p2["score"]
+                                BUTTON_USED_P2["undo"] = True
+                                history_p2 = None
 
                         elif e.key == pygame.K_KP2:  # Swap
                             if not BUTTON_USED_P2["swap"]:
                                 BUTTON_USED_P2["swap"] = True
+                                if history_p2 is None:
+                                    history_p2 = {"grid": [r[:] for r in grid2], "score": score_p2}
                                 grid2 = swap_grid(grid2)
 
                         elif e.key == pygame.K_KP3:  # Delete
                             if not BUTTON_USED_P2["delete"]:
                                 BUTTON_USED_P2["delete"] = True
+                                if history_p2 is None:
+                                    history_p2 = {"grid": [r[:] for r in grid2], "score": score_p2}
                                 grid2 = delete_tile(grid2)
        
 
@@ -573,6 +597,8 @@ def main():
                     if game_state == "play2": 
                         grid2 = reset_game()
                         score_p2 = 0
+                    history_p1 = None
+                    history_p2 = None
                 elif result == "menu":
                     game_state = "menu"
         
