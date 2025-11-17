@@ -74,6 +74,9 @@ def reset_game():
     BUTTON_USED_P1["undo"] = False
     BUTTON_USED_P1["swap"] = False
     BUTTON_USED_P1["delete"] = False
+    BUTTON_USED_P2["undo"] = False
+    BUTTON_USED_P2["swap"] = False
+    BUTTON_USED_P2["delete"] = False
     g = new_grid()
     add_random_tile(g)
     add_random_tile(g)
