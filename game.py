@@ -12,8 +12,11 @@ background_path = os.path.join(current_dir, "background.png")
 background = pygame.image.load(background_path)
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
-how_path = os.path.join(current_dir, "howtoplay.png")
-how = pygame.image.load(how_path)
+how_path1 = os.path.join(current_dir, "howtoplay1.png")
+how1 = pygame.image.load(how_path1)
+
+how_path2 = os.path.join(current_dir, "howtoplay2.png")
+how2 = pygame.image.load(how_path2)
 
 #กำหนดสีช่อง เตย
 COLOR_SET = {
@@ -205,8 +208,12 @@ def draw_game(grid1, grid2=None):
 
     pygame.display.flip()
 
-def how_to_play():
-    screen.blit(how, (0, 0))
+def how_to_play1():
+    screen.blit(how1, (0, 0))
+    pygame.display.flip()
+
+def how_to_play2():
+    screen.blit(how2, (0, 0))
     pygame.display.flip()
     
 def draw_menu():
@@ -419,9 +426,14 @@ def main():
                         start_time = pygame.time.get_ticks()
                         game_state = "play2"
                     elif how_rect.collidepoint(e.pos):
-                        game_state = "howtoplay"
+                        game_state = "howtoplay1"
 
-            elif game_state in ("play1", "play2", "howtoplay"):
+            elif game_state == "howtoplay2":
+                if e.type == pygame.KEYDOWN:
+                    if e.key == pygame.K_ESCAPE:
+                        game_state = "howtoplay1"
+
+            elif game_state in ("play1", "play2", "howtoplay1"):
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_ESCAPE:
                         game_state = "menu"
@@ -506,6 +518,10 @@ def main():
                             elif result == "menu":
                                 game_state = "menu"
 
+                elif game_state == "howtoplay1":
+                        if e.key == pygame.K_RETURN:
+                            game_state = "howtoplay2"
+
                 # บังคับ ฟลุค
                 if e.type == pygame.KEYDOWN:
                     if e.key == pygame.K_1:  # Undo
@@ -562,8 +578,10 @@ def main():
             draw_game(grid1)
         elif game_state == "play2":
             draw_game(grid1, grid2)
-        elif game_state == "howtoplay":
-            how_to_play()
+        elif game_state == "howtoplay1":
+            how_to_play1()
+        elif game_state == "howtoplay2":
+            how_to_play2()
 
         #จับเวลา เตย
         if game_state in ("play2"):
