@@ -125,11 +125,6 @@ def draw_buttons(start_x, start_y, size, gap, for_player="p1"):
     screen.blit(t2, t2.get_rect(center=swap_rect.center))
     screen.blit(t3, t3.get_rect(center=delete_rect.center))
 
-    #เก็บ rect เพื่อจับคลิก แยกผู้เล่น
-    target = BUTTONS_P1 if for_player == "p1" else BUTTONS_P2
-    target["undo"]   = undo_rect
-    target["swap"]   = swap_rect
-    target["delete"] = delete_rect
 
 def swap_grid(grid): #สลับทุกตัวในตาราง *ฟลุค
     nums = [grid[r][c] for r in range(4) for c in range(4)]
